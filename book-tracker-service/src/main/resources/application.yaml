@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/library?currentSchema=library
+    username: postgres
+    password: 1111
+    driver-class-name: org.postgresql.Driver
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    view:
+      prefix:
+      suffix:
+server:
+  port: 8081
