@@ -1,6 +1,6 @@
 package com.modsen.bookstorageservice.service;
 
-import com.modsen.bookstorageservice.web.dto.BookDto;
+import com.modsen.bookstorageservice.dto.BookDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

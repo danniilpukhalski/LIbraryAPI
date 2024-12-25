@@ -1,9 +1,9 @@
-package com.modsen.bookstorageservice.web.dto;
+package com.modsen.bookstorageservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.modsen.bookstorageservice.domain.Role;
-import com.modsen.bookstorageservice.web.dto.validation.OnCreate;
-import com.modsen.bookstorageservice.web.dto.validation.OnUpdate;
+import com.modsen.bookstorageservice.dto.validation.OnUpdate;
+import com.modsen.bookstorageservice.dto.validation.OnCreate;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

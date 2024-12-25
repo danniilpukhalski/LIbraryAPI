@@ -5,8 +5,8 @@ import com.modsen.bookstorageservice.domain.exception.DuplicateResourceException
 import com.modsen.bookstorageservice.domain.exception.ResourceNotFoundException;
 import com.modsen.bookstorageservice.repository.BookRepository;
 import com.modsen.bookstorageservice.service.BookService;
-import com.modsen.bookstorageservice.web.dto.BookDto;
-import com.modsen.bookstorageservice.web.mapper.BookMapper;
+import com.modsen.bookstorageservice.dto.BookDto;
+import com.modsen.bookstorageservice.mapper.BookMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

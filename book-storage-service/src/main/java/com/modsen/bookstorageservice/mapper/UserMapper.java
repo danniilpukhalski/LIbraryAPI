@@ -1,7 +1,7 @@
-package com.modsen.bookstorageservice.web.mapper;
+package com.modsen.bookstorageservice.mapper;
 
 import com.modsen.bookstorageservice.domain.User;
-import com.modsen.bookstorageservice.web.dto.UserDto;
+import com.modsen.bookstorageservice.dto.UserDto;
 import org.mapstruct.Mapper;
 
 import java.util.List;

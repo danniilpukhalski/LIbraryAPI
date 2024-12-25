@@ -1,8 +1,8 @@
-package com.modsen.bookstorageservice.web.security;
+package com.modsen.bookstorageservice.security;
 
 import com.modsen.bookstorageservice.domain.User;
 import com.modsen.bookstorageservice.service.UserService;
-import com.modsen.bookstorageservice.web.mapper.UserMapper;
+import com.modsen.bookstorageservice.mapper.UserMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

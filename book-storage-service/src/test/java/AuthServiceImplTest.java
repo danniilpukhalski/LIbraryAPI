@@ -1,11 +1,11 @@
 import com.modsen.bookstorageservice.domain.User;
 import com.modsen.bookstorageservice.service.UserService;
 import com.modsen.bookstorageservice.service.impl.AuthServiceImpl;
-import com.modsen.bookstorageservice.web.dto.UserDto;
-import com.modsen.bookstorageservice.web.dto.auth.JwtRequest;
-import com.modsen.bookstorageservice.web.dto.auth.JwtResponse;
-import com.modsen.bookstorageservice.web.mapper.UserMapper;
-import com.modsen.bookstorageservice.web.security.JwtTokenProvider;
+import com.modsen.bookstorageservice.dto.UserDto;
+import com.modsen.bookstorageservice.dto.auth.JwtRequest;
+import com.modsen.bookstorageservice.dto.auth.JwtResponse;
+import com.modsen.bookstorageservice.mapper.UserMapper;
+import com.modsen.bookstorageservice.security.JwtTokenProvider;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

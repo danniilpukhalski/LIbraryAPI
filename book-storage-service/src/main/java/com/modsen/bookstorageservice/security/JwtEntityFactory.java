@@ -1,4 +1,4 @@
-package com.modsen.bookstorageservice.web.security;
+package com.modsen.bookstorageservice.security;
 
 import com.modsen.bookstorageservice.domain.Role;
 import com.modsen.bookstorageservice.domain.User;

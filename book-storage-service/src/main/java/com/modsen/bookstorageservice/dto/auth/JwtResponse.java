@@ -1,4 +1,4 @@
-package com.modsen.bookstorageservice.web.dto.auth;
+package com.modsen.bookstorageservice.dto.auth;
 
 import lombok.AccessLevel;
 import lombok.Data;

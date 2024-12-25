@@ -1,8 +1,8 @@
 package com.modsen.bookstorageservice.service;
 
-import com.modsen.bookstorageservice.web.dto.UserDto;
-import com.modsen.bookstorageservice.web.dto.auth.JwtRequest;
-import com.modsen.bookstorageservice.web.dto.auth.JwtResponse;
+import com.modsen.bookstorageservice.dto.UserDto;
+import com.modsen.bookstorageservice.dto.auth.JwtRequest;
+import com.modsen.bookstorageservice.dto.auth.JwtResponse;
 
 public interface AuthService {
 

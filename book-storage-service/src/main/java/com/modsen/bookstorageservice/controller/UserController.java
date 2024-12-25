@@ -1,11 +1,9 @@
-package com.modsen.bookstorageservice.web.controller;
+package com.modsen.bookstorageservice.controller;
 
-import com.modsen.bookstorageservice.domain.User;
 import com.modsen.bookstorageservice.service.UserService;
-import com.modsen.bookstorageservice.web.dto.UserDto;
-import com.modsen.bookstorageservice.web.dto.validation.OnCreate;
-import com.modsen.bookstorageservice.web.dto.validation.OnUpdate;
-import com.modsen.bookstorageservice.web.mapper.UserMapper;
+import com.modsen.bookstorageservice.dto.UserDto;
+import com.modsen.bookstorageservice.dto.validation.OnCreate;
+import com.modsen.bookstorageservice.dto.validation.OnUpdate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.modsen.bookstorageservice.web.handler;
+package com.modsen.bookstorageservice.handler;
 
 
 import com.modsen.bookstorageservice.domain.exception.DuplicateResourceException;

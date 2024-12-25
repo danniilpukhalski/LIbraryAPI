@@ -1,12 +1,11 @@
-package com.modsen.bookstorageservice.web.controller;
+package com.modsen.bookstorageservice.controller;
 
 
 import com.modsen.bookstorageservice.service.AuthService;
-import com.modsen.bookstorageservice.service.UserService;
-import com.modsen.bookstorageservice.web.dto.UserDto;
-import com.modsen.bookstorageservice.web.dto.auth.JwtRequest;
-import com.modsen.bookstorageservice.web.dto.auth.JwtResponse;
-import com.modsen.bookstorageservice.web.dto.auth.RefreshRequest;
+import com.modsen.bookstorageservice.dto.UserDto;
+import com.modsen.bookstorageservice.dto.auth.JwtRequest;
+import com.modsen.bookstorageservice.dto.auth.JwtResponse;
+import com.modsen.bookstorageservice.dto.auth.RefreshRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,7 +1,7 @@
 package com.modsen.bookstorageservice.config;
 
-import com.modsen.bookstorageservice.web.security.JwtTokenFilter;
-import com.modsen.bookstorageservice.web.security.JwtTokenProvider;
+import com.modsen.bookstorageservice.security.JwtTokenFilter;
+import com.modsen.bookstorageservice.security.JwtTokenProvider;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -1,7 +1,7 @@
-package com.modsen.bookstorageservice.web.dto;
+package com.modsen.bookstorageservice.dto;
 
-import com.modsen.bookstorageservice.web.dto.validation.OnCreate;
-import com.modsen.bookstorageservice.web.dto.validation.OnUpdate;
+import com.modsen.bookstorageservice.dto.validation.OnCreate;
+import com.modsen.bookstorageservice.dto.validation.OnUpdate;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

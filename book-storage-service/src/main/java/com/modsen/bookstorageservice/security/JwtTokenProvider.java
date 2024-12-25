@@ -1,11 +1,11 @@
-package com.modsen.bookstorageservice.web.security;
+package com.modsen.bookstorageservice.security;
 
 import com.modsen.bookstorageservice.domain.Role;
 import com.modsen.bookstorageservice.domain.User;
 import com.modsen.bookstorageservice.service.UserService;
 import com.modsen.bookstorageservice.service.props.JwtProperties;
-import com.modsen.bookstorageservice.web.dto.auth.JwtResponse;
-import com.modsen.bookstorageservice.web.mapper.UserMapper;
+import com.modsen.bookstorageservice.dto.auth.JwtResponse;
+import com.modsen.bookstorageservice.mapper.UserMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ClaimsBuilder;
 import io.jsonwebtoken.Jws;

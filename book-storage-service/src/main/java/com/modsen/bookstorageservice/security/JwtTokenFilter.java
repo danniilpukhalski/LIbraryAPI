@@ -1,4 +1,4 @@
-package com.modsen.bookstorageservice.web.security;
+package com.modsen.bookstorageservice.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modsen.bookstorageservice.domain.exception.ExceptionBody;

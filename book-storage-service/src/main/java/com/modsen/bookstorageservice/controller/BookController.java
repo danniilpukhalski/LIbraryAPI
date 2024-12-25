@@ -1,10 +1,10 @@
-package com.modsen.bookstorageservice.web.controller;
+package com.modsen.bookstorageservice.controller;
 
 
 import com.modsen.bookstorageservice.service.BookService;
-import com.modsen.bookstorageservice.web.dto.BookDto;
-import com.modsen.bookstorageservice.web.dto.validation.OnCreate;
-import com.modsen.bookstorageservice.web.dto.validation.OnUpdate;
+import com.modsen.bookstorageservice.dto.BookDto;
+import com.modsen.bookstorageservice.dto.validation.OnCreate;
+import com.modsen.bookstorageservice.dto.validation.OnUpdate;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
