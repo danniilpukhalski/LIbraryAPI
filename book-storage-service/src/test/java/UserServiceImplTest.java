@@ -34,75 +34,70 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
+    private static User user;
+    private static UserDto userDto;
+
+    public static void setUpBeforeAll() {
+        // Это выполняется один раз для всего класса
+        user = new User();
+        user.setId(1L);
+        user.setUsername("testUser");
+        user.setPassword("password");
+
+        userDto = new UserDto();
+        userDto.setId(1L);
+        userDto.setUsername("testUser");
+        userDto.setPassword("password");
+    }
+
     @Test
     void testGetUserById_Success() {
-        Long userId = 1L;
-        User user = new User();
-        user.setId(userId);
 
-        UserDto userDto = new UserDto();
-        userDto.setId(userId);
-
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(userMapper.toDto(user)).thenReturn(userDto);
 
-        UserDto result = userService.getUserById(userId);
+        UserDto result = userService.getUserById(userDto.getId());
 
         assertNotNull(result);
-        assertEquals(userId, result.getId());
-        verify(userRepository, times(1)).findById(userId);
+        assertEquals(userDto.getId(), result.getId());
+        verify(userRepository, times(1)).findById(user.getId());
         verify(userMapper, times(1)).toDto(user);
     }
 
     @Test
     void testGetUserById_NotFound() {
-        Long userId = 1L;
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> userService.getUserById(userId));
-        verify(userRepository, times(1)).findById(userId);
+        assertThrows(ResourceNotFoundException.class, () -> userService.getUserById(userDto.getId()));
+        verify(userRepository, times(1)).findById(user.getId());
         verify(userMapper, never()).toDto(any(User.class));
     }
 
     @Test
     void testGetUserByUsername_Success() {
-        String username = "testUser";
-        User user = new User();
-        user.setUsername(username);
-
-        UserDto userDto = new UserDto();
-        userDto.setUsername(username);
-
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
         when(userMapper.toDto(user)).thenReturn(userDto);
 
-        UserDto result = userService.getUserByUsername(username);
+        UserDto result = userService.getUserByUsername(userDto.getUsername());
 
         assertNotNull(result);
-        assertEquals(username, result.getUsername());
-        verify(userRepository, times(1)).findByUsername(username);
+        assertEquals(userDto.getUsername(), result.getUsername());
+        verify(userRepository, times(1)).findByUsername(user.getUsername());
         verify(userMapper, times(1)).toDto(user);
     }
 
     @Test
     void testGetUserByUsername_NotFound() {
-        String username = "testUser";
-        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> userService.getUserByUsername(username));
-        verify(userRepository, times(1)).findByUsername(username);
+        assertThrows(ResourceNotFoundException.class, () -> userService.getUserByUsername(userDto.getUsername()));
+        verify(userRepository, times(1)).findByUsername(user.getUsername());
         verify(userMapper, never()).toDto(any(User.class));
     }
 
     @Test
     void testUpdateUser_Success() {
-        UserDto userDto = new UserDto();
-        userDto.setId(1L);
-        userDto.setPassword("password");
 
-        User user = new User();
-        user.setId(1L);
-        user.setPassword("password");
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userMapper.toEntity(userDto)).thenReturn(user);
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
@@ -152,15 +147,6 @@ class UserServiceImplTest {
 
     @Test
     void testCreateUser_Success() {
-        UserDto userDto = new UserDto();
-        userDto.setUsername("newUser");
-        userDto.setPassword("password");
-        userDto.setPasswordConfirmation("password");
-
-        User user = new User();
-        user.setUsername("newUser");
-        user.setPassword("password");
-
         when(userMapper.toEntity(userDto)).thenReturn(user);
         when(userRepository.findByUsername("newUser")).thenReturn(Optional.empty());
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
@@ -175,24 +161,12 @@ class UserServiceImplTest {
 
     @Test
     void testCreateUser_PasswordsDoNotMatch() {
-        UserDto userDto = new UserDto();
-        userDto.setUsername("newUser");
-        userDto.setPassword("password");
-        userDto.setPasswordConfirmation("differentPassword");
-
-
         assertThrows(IllegalStateException.class, () -> userService.createUser(userDto));
         verify(userRepository, never()).save(any());
     }
 
     @Test
     void testCreateUser_UserAlreadyExists() {
-        UserDto userDto = new UserDto();
-        userDto.setUsername("existingUser");
-
-        User user = new User();
-        user.setUsername("existingUser");
-
         when(userRepository.findByUsername("existingUser")).thenReturn(Optional.of(user));
 
         assertThrows(IllegalStateException.class, () -> userService.createUser(userDto));
@@ -200,29 +174,22 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testSoftDeleteUser_Success() {
-        Long userId = 1L;
-        User user = new User();
-        user.setId(userId);
-        user.setDeleted(false);
+    void testDeleteUser_Success() {
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        userService.deleteUser(user.getId());
 
-        userService.softDeleteUser(userId);
-
-        verify(userRepository, times(1)).findById(userId);
-        assertTrue(user.getDeleted());
+        verify(userRepository, times(1)).delete(user);
     }
 
     @Test
-    void testSoftDeleteUser_NotFound() {
-        Long userId = 1L;
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+    void testDeleteUser_UserNotFound() {
+        when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> userService.softDeleteUser(userId));
-        verify(userRepository, times(1)).findById(userId);
+        assertThrows(ResourceNotFoundException.class, () -> userService.deleteUser(user.getId()));
+
+        verify(userRepository, never()).delete(any(User.class));
     }
-
     @Test
     void testGetAllUsers_WhenUsersExist() {
         List<User> users = new ArrayList<>();

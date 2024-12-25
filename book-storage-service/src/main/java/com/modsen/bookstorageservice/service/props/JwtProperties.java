@@ -1,14 +1,19 @@
 package com.modsen.bookstorageservice.service.props;
 
+import lombok.AccessLevel;
 import lombok.Data;
-import org.springframework.stereotype.Component;
+import lombok.experimental.FieldDefaults;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-@Component
 @Data
+@Configuration
+@ConfigurationProperties(prefix = "credentials")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtProperties {
 
-    private String secret = "amhnY3Ziamtqa2hnZmZjZnZibmJ2Y2dlcmhmamdoa3ZjZ2ZnaGosYnZjZmdqaGJ2Y2ZnaGI=";
-    private long access = 3600000;
-    private long refresh = 259200000;
+    String secret;
+    long access;
+    long refresh;
 
 }

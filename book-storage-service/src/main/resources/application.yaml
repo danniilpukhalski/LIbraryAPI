@@ -15,8 +15,7 @@ spring:
     show-sql: true
     properties:
       hibernate.default_schema: library_schema
-logging:
-  level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.flywaydb.core: DEBUG
+credentials:
+  secret: ${SECRET_KEY}
+  access: ${ACCESS_DURATION}
+  refresh: ${REFRESH_DURATION}

@@ -6,6 +6,9 @@ import com.modsen.bookstorageservice.web.dto.auth.JwtRequest;
 import com.modsen.bookstorageservice.web.dto.auth.JwtResponse;
 import com.modsen.bookstorageservice.web.mapper.UserMapper;
 import com.modsen.bookstorageservice.web.security.JwtTokenProvider;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,14 +39,18 @@ public class AuthServiceImplTest {
 
     private JwtRequest loginRequest;
     private UserDto userDto;
-    //private JwtResponse jwtResponse;
 
-    @Test
-    void testLogin_Success() {
+    @BeforeEach
+    public void setUp() {
         loginRequest = new JwtRequest("testUsername", "testPassword");
         userDto = new UserDto();
         userDto.setUsername("testUsername");
         userDto.setPassword("testPassword");
+    }
+
+    @Test
+    @DisplayName("testLogin_Success")
+    void testLogin_Success() {
         User user = new User();
         user.setId(1L);
         user.setUsername("testUsername");
@@ -74,9 +81,8 @@ public class AuthServiceImplTest {
     }
 
     @Test
+    @DisplayName("testLogin_AuthenticationFailed")
     void testLogin_AuthenticationFailed() {
-        loginRequest = new JwtRequest("testUsername", "testPassword");
-
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenThrow(new RuntimeException("Authentication failed"));
 
@@ -87,6 +93,7 @@ public class AuthServiceImplTest {
     }
 
     @Test
+    @DisplayName("testRefresh_Success")
     void testRefresh_Success() {
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setRefreshToken("refreshToken");
@@ -100,9 +107,8 @@ public class AuthServiceImplTest {
     }
 
     @Test
+    @DisplayName("testRegister_Success")
     void testRegister_Success() {
-        userDto = new UserDto();
-        userDto.setUsername("testUsername");
         when(userService.createUser(userDto)).thenReturn(userDto);
 
         UserDto result = authService.register(userDto);
@@ -114,9 +120,8 @@ public class AuthServiceImplTest {
     }
 
     @Test
+    @DisplayName("testRegister_UserAlreadyExists")
     void testRegister_UserAlreadyExists() {
-        userDto = new UserDto();
-        userDto.setUsername("testUsername");
         when(userService.createUser(userDto)).thenThrow(new RuntimeException("User already exists"));
 
         assertThrows(RuntimeException.class, () -> authService.register(userDto));

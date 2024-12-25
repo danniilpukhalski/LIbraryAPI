@@ -8,6 +8,7 @@ import com.modsen.bookstorageservice.web.dto.validation.OnUpdate;
 import com.modsen.bookstorageservice.web.mapper.UserMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +41,8 @@ public class UserController {
     @Transactional
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == principal.id)")
-    public void softDeleteUserById(@PathVariable Long id) {
-        userService.softDeleteUser(id);
+    public void deleteUserById(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 
     @Transactional
@@ -55,6 +56,7 @@ public class UserController {
     @Transactional
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public UserDto createUser(@Validated(OnCreate.class)@RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }

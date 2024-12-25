@@ -17,10 +17,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
-    private final UserMapper userMapper;
+    AuthenticationManager authenticationManager;
+    JwtTokenProvider jwtTokenProvider;
+    UserService userService;
+    UserMapper userMapper;
 
 
     @Override

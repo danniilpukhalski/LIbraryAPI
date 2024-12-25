@@ -18,7 +18,7 @@ public interface BookService {
 
     BookDto updateBook(BookDto bookDto);
 
-    void softDeleteBook(Long id);
+    void deleteBook(Long id);
 
 
 }

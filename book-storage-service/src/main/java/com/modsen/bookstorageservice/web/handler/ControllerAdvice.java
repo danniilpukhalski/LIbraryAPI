@@ -1,10 +1,9 @@
-package com.modsen.bookstorageservice.web.controller;
+package com.modsen.bookstorageservice.web.handler;
 
 
 import com.modsen.bookstorageservice.domain.exception.DuplicateResourceException;
 import com.modsen.bookstorageservice.domain.exception.ExceptionBody;
 import com.modsen.bookstorageservice.domain.exception.ResourceNotFoundException;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.security.auth.message.AuthException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

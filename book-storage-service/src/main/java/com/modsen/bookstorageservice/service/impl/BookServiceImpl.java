@@ -7,18 +7,22 @@ import com.modsen.bookstorageservice.repository.BookRepository;
 import com.modsen.bookstorageservice.service.BookService;
 import com.modsen.bookstorageservice.web.dto.BookDto;
 import com.modsen.bookstorageservice.web.mapper.BookMapper;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BookServiceImpl implements BookService {
 
 
-    private final BookRepository bookRepository;
-    private final BookMapper bookMapper;
+    BookRepository bookRepository;
+    BookMapper bookMapper;
+    RabbitServiceImpl rabbitService;
 
     @Override
     public BookDto getBookById(Long id) {
@@ -44,8 +48,8 @@ public class BookServiceImpl implements BookService {
         if (bookRepository.findByIsbn(book.getIsbn()).isPresent()) {
             throw new DuplicateResourceException("Book already exists");
         }
-        book.setDeleted(false);
         bookRepository.save(book);
+        rabbitService.addCreateBook(bookDto.getId());
         return bookMapper.toDto(book);
     }
 
@@ -59,10 +63,10 @@ public class BookServiceImpl implements BookService {
         return bookDto;
     }
 
-    public void softDeleteBook(Long id) {
+    public void deleteBook(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-        book.setDeleted(true);
-        bookRepository.save(book);
+        rabbitService.addDeleteBook(book.getId());
+        bookRepository.delete(book);
     }
 
 

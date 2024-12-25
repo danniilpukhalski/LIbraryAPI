@@ -1,15 +1,14 @@
-drop schema if exists library_schema cascade ;
+drop schema if exists library_schema cascade;
 create schema if not exists library_schema;
 
-create table library_schema.trackers
+create table library_schema.books
 (
     id          bigserial primary key,
-    isbn        varchar(255) not null,
-    title       varchar(255) not null,
-    genre       varchar(255) not null,
+    isbn        varchar not null,
+    title       varchar not null,
+    genre       varchar not null,
     description text,
-    author      varchar(255) not null,
-    deleted     bool         not null
+    author      varchar not null
 
 );
 
@@ -17,8 +16,7 @@ create table library_schema.users
 (
     id       bigserial primary key,
     username varchar(255) not null unique,
-    password varchar(255) not null,
-    deleted  bool         not null
+    password varchar(255) not null
 
 );
 
@@ -37,8 +35,7 @@ create table library_schema.bookTrack
     status   varchar(50) not null,
     taken    date,
     returned date,
-    deleted  bool        not null,
-    constraint fk_book foreign key (bookId) references library_schema.trackers (id) on delete cascade
+    constraint fk_book foreign key (bookId) references library_schema.books (id) on delete cascade
 );
 
 

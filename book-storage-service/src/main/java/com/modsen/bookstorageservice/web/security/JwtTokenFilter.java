@@ -10,7 +10,9 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -18,8 +20,9 @@ import org.springframework.web.filter.GenericFilterBean;
 import java.io.IOException;
 
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class JwtTokenFilter extends GenericFilterBean {
-    private final JwtTokenProvider jwtTokenProvider;
+    JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -41,8 +44,8 @@ public class JwtTokenFilter extends GenericFilterBean {
                 }
             }
         } catch (Exception e) {
-           exceptionHandler((HttpServletResponse) servletResponse, e);
-          return;
+            exceptionHandler((HttpServletResponse) servletResponse, e);
+            return;
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

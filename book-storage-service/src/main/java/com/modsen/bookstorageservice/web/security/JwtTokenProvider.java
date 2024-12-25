@@ -6,10 +6,15 @@ import com.modsen.bookstorageservice.service.UserService;
 import com.modsen.bookstorageservice.service.props.JwtProperties;
 import com.modsen.bookstorageservice.web.dto.auth.JwtResponse;
 import com.modsen.bookstorageservice.web.mapper.UserMapper;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ClaimsBuilder;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,12 +31,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = false)
 public class JwtTokenProvider {
-    private final JwtProperties jwtProperties;
-    private final UserDetailsService userDetailsService;
-    private final UserService userService;
-    private final UserMapper userMapper;
-    private SecretKey key;
+    final JwtProperties jwtProperties;
+    final UserDetailsService userDetailsService;
+    final UserService userService;
+    final UserMapper userMapper;
+    SecretKey key;
 
     @PostConstruct
     public void init() {
@@ -90,12 +96,12 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
-            Jws<Claims> claims = Jwts
-                    .parser()
-                    .verifyWith(key)
-                    .build()
-                    .parseSignedClaims(token);
-            return !claims.getPayload().getExpiration().before(new Date());
+        Jws<Claims> claims = Jwts
+                .parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token);
+        return !claims.getPayload().getExpiration().before(new Date());
     }
 
     private String getId(String token) {

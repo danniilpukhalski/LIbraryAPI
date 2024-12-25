@@ -1,13 +1,16 @@
 package com.modsen.bookstorageservice.web.dto.auth;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtResponse {
 
-    private Long id;
-    private String username;
-    private String accessToken;
-    private String refreshToken;
+    Long id;
+    String username;
+    String accessToken;
+    String refreshToken;
 
 }

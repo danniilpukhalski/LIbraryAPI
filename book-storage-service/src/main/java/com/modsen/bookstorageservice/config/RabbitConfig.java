@@ -19,12 +19,6 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Queue deleteSoftBookQueue() {
-
-        return new Queue("soft_delete_book_queue");
-    }
-
-    @Bean
     public Queue createBookQueue() {
 
         return new Queue("create_book_queue");
@@ -41,13 +35,6 @@ public class RabbitConfig {
         return BindingBuilder.bind(deleteBookQueue())
                 .to(bookExchange())
                 .with("delete_book");
-    }
-
-    @Bean
-    public Binding deleteSoftBookBinding() {
-        return BindingBuilder.bind(deleteSoftBookQueue())
-                .to(bookExchange())
-                .with("soft_delete_book_queue");
     }
 
     @Bean

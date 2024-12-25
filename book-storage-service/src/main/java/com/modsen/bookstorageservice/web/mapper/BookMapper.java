@@ -10,7 +10,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BookMapper {
 
-
     BookDto toDto(Book book);
 
     Book toEntity(BookDto bookDto);
