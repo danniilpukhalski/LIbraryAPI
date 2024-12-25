@@ -18,9 +18,6 @@ public class RabbitServiceImpl implements RabbitService {
 
     @Override
     public void addCreateBook(Long bookId) {
-        String message = "create," + bookId;
-        System.out.println(("Sending message to queue: {}" + message)); // Логирование отправляемого сообщения
-        rabbitTemplate.convertAndSend(directExchange.getName(), "create_book", message);
         rabbitTemplate.convertAndSend(directExchange.getName(), "create_book", "create," + bookId);
     }
 

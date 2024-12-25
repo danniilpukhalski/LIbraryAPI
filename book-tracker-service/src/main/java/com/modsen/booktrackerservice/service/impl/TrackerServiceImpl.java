@@ -102,8 +102,7 @@ public class TrackerServiceImpl implements TrackerService {
     public void deleteTrackerByBookId(Long bookId) {
         Tracker tracker = trackerRepository.findTrackerByBookId(bookId).orElseThrow(() ->
                 new ResourceNotFoundException("Tracker with id " + bookId + " not found"));
-        tracker.setDeleted(true);
-        trackerRepository.save(tracker);
+        trackerRepository.delete(tracker);
     }
 
 }

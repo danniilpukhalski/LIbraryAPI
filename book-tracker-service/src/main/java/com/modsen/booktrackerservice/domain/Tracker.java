@@ -39,6 +39,4 @@ public class Tracker {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     LocalDate returned;
 
-    @Schema(description = "isDeleted", example = "true")
-    Boolean deleted;
 }

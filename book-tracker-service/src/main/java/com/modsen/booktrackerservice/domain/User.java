@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "users_view")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 
