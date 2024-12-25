@@ -3,13 +3,14 @@ package com.modsen.booktrackerservice.service.impl;
 import com.modsen.booktrackerservice.domain.Tracker;
 import com.modsen.booktrackerservice.domain.exception.DuplicateResourceException;
 import com.modsen.booktrackerservice.domain.exception.ResourceNotFoundException;
+import com.modsen.booktrackerservice.dto.TrackerDto;
+import com.modsen.booktrackerservice.dto.trackerStatusRequest;
+import com.modsen.booktrackerservice.mapper.TrackMapper;
 import com.modsen.booktrackerservice.repository.TrackerRepository;
 import com.modsen.booktrackerservice.service.TrackerService;
-import com.modsen.booktrackerservice.web.dto.TrackerDto;
-import com.modsen.booktrackerservice.web.dto.trackerStatusRequest;
-import com.modsen.booktrackerservice.web.mapper.TrackMapper;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -20,16 +21,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Validated
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TrackerServiceImpl implements TrackerService {
 
-    private final TrackerRepository trackerRepository;
-    private final TrackMapper trackMapper;
+    TrackerRepository trackerRepository;
+    TrackMapper trackMapper;
 
 
     @Override
     public TrackerDto getTrackerByBookId(Long bookId) {
         return trackMapper.toTrackerDto(trackerRepository.findTrackerByBookId(bookId).orElseThrow(() ->
-                new ResourceNotFoundException("Tracker not found")));
+                new ResourceNotFoundException("Tracker with bookId " + bookId + "not found")));
 
     }
 
@@ -37,7 +39,7 @@ public class TrackerServiceImpl implements TrackerService {
     @Override
     public TrackerDto getTrackerById(Long id) {
         return trackMapper.toTrackerDto(trackerRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Tracker not found")));
+                new ResourceNotFoundException("Tracker with id" + id + "not found")));
     }
 
     @Override
@@ -49,7 +51,7 @@ public class TrackerServiceImpl implements TrackerService {
     @Override
     public TrackerDto updateTrackerStatus(Long bookId, trackerStatusRequest trackerStatusRequest) {
         Tracker tracker = trackerRepository.findTrackerByBookId(bookId).orElseThrow(() ->
-                new ResourceNotFoundException("Tracker not found"));
+                new ResourceNotFoundException("Tracker with bookId" + bookId + " not found"));
         assert tracker != null;
         if (trackerStatusRequest.getStatus().equals("taken")) {
             tracker.setTaken(LocalDate.now());
@@ -70,7 +72,7 @@ public class TrackerServiceImpl implements TrackerService {
     @Override
     public TrackerDto createTracker(Long bookId) {
         if (trackerRepository.findById(bookId).isPresent()) {
-            throw new DuplicateResourceException("Tracker already exists");
+            throw new DuplicateResourceException("Tracker with bookId" + bookId + " already exists");
         }
         Tracker tracker = new Tracker();
         tracker.setBookId(bookId);
@@ -82,46 +84,26 @@ public class TrackerServiceImpl implements TrackerService {
     @Override
     public TrackerDto updateTracker(TrackerDto trackerDto) {
         trackerRepository.findById(trackerDto.getId()).orElseThrow(() ->
-                new ResourceNotFoundException("Tracker not found"));
+                new ResourceNotFoundException("Tracker with id " + trackerDto.getId() + " not found"));
         trackerRepository.save(trackMapper.toEntity(trackerDto));
         return trackerDto;
     }
 
     @Override
-    public void softDeleteTrackerById(Long id) {
+    public void deleteTrackerById(Long id) {
         if (!trackerRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Tracker not found");
+            throw new ResourceNotFoundException("Tracker with id " + id + " not found");
         }
         trackerRepository.deleteById(id);
 
     }
 
     @Override
-    public void softDeleteTrackerByBookId(Long bookId) {
+    public void deleteTrackerByBookId(Long bookId) {
         Tracker tracker = trackerRepository.findTrackerByBookId(bookId).orElseThrow(() ->
-                new ResourceNotFoundException("Tracker not found"));
+                new ResourceNotFoundException("Tracker with id " + bookId + " not found"));
         tracker.setDeleted(true);
         trackerRepository.save(tracker);
-    }
-
-    @RabbitListener(queues = "create_book_queue")
-    public void receiveCreateMessage(String message) {
-        String[] parts = message.split(",");
-        String action = parts[0];
-        Long bookId = Long.parseLong(parts[1]);
-        if ("create".equals(action)) {
-            createTracker(bookId);
-        }
-    }
-
-    @RabbitListener(queues = "delete_book_queue")
-    public void receiveSoftDeleteMessage(String message) {
-        String[] parts = message.split(",");
-        String action = parts[0];
-        Long bookId = Long.parseLong(parts[1]);
-        if ("delete".equals(action)) {
-            softDeleteTrackerByBookId(bookId);
-        }
     }
 
 }

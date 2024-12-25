@@ -14,10 +14,4 @@ public class BookTrackerServiceApplication {
         SpringApplication.run(BookTrackerServiceApplication.class, args);
     }
 
-    @Bean
-    HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-        return new HiddenHttpMethodFilter();
-    }
-
-
 }

@@ -1,11 +1,13 @@
-package com.modsen.booktrackerservice.web.security;
+package com.modsen.booktrackerservice.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,9 +19,10 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtTokenProvider {
-    private final JwtProperties jwtProperties;
-    private final UserDetailsService userDetailsService;
+    final JwtProperties jwtProperties;
+    final UserDetailsService userDetailsService;
     private SecretKey key;
 
     @PostConstruct

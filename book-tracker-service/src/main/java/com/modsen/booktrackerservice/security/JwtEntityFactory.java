@@ -1,4 +1,4 @@
-package com.modsen.booktrackerservice.web.security;
+package com.modsen.booktrackerservice.security;
 
 import com.modsen.booktrackerservice.domain.Role;
 import com.modsen.booktrackerservice.domain.User;

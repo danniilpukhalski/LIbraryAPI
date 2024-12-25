@@ -1,4 +1,4 @@
-package com.modsen.booktrackerservice.web.security;
+package com.modsen.booktrackerservice.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modsen.booktrackerservice.domain.exception.ExceptionBody;
@@ -10,7 +10,9 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -18,8 +20,9 @@ import org.springframework.web.filter.GenericFilterBean;
 import java.io.IOException;
 
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class JwtTokenFilter extends GenericFilterBean {
-    private final JwtTokenProvider jwtTokenProvider;
+    JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -28,18 +31,18 @@ public class JwtTokenFilter extends GenericFilterBean {
             bearerToken = bearerToken.substring(7);
 
         }
-        try{
-        if (bearerToken != null && jwtTokenProvider.validateToken(bearerToken)) {
-            try {
-                Authentication authentication = jwtTokenProvider.getAuthentication(bearerToken);
-                if (authentication != null) {
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
-            } catch (ResourceNotFoundException ignored) {
+        try {
+            if (bearerToken != null && jwtTokenProvider.validateToken(bearerToken)) {
+                try {
+                    Authentication authentication = jwtTokenProvider.getAuthentication(bearerToken);
+                    if (authentication != null) {
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                } catch (ResourceNotFoundException ignored) {
 
+                }
             }
-        }}
-        catch (Exception e) {
+        } catch (Exception e) {
             exceptionHandler((HttpServletResponse) servletResponse, e);
             return;
         }

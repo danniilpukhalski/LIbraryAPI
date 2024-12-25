@@ -1,7 +1,9 @@
-package com.modsen.booktrackerservice.web.security;
+package com.modsen.booktrackerservice.security;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,12 +11,13 @@ import java.util.Collection;
 
 @Data
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtEntity implements UserDetails {
 
     private Long id;
-    private final String username;
-    private final String password;
-    private final Collection<? extends GrantedAuthority> authorities;
+    final String username;
+    final String password;
+    final Collection<? extends GrantedAuthority> authorities;
 
     @Override
     public boolean isAccountNonExpired() {

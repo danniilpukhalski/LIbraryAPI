@@ -1,4 +1,4 @@
-package com.modsen.booktrackerservice.web.controller;
+package com.modsen.booktrackerservice.handler;
 
 import com.modsen.booktrackerservice.domain.exception.DuplicateResourceException;
 import com.modsen.booktrackerservice.domain.exception.ExceptionBody;

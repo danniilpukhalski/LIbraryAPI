@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name = "users_view")
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = false)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
 
     @Id

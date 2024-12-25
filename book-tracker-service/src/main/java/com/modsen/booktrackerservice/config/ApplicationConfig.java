@@ -1,7 +1,7 @@
 package com.modsen.booktrackerservice.config;
 
-import com.modsen.booktrackerservice.web.security.JwtTokenFilter;
-import com.modsen.booktrackerservice.web.security.JwtTokenProvider;
+import com.modsen.booktrackerservice.security.JwtTokenFilter;
+import com.modsen.booktrackerservice.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -65,5 +66,9 @@ public class ApplicationConfig {
                         .anyRequest().permitAll())
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
+    }
+    @Bean
+    HiddenHttpMethodFilter hiddenHttpMethodFilter() {
+        return new HiddenHttpMethodFilter();
     }
 }

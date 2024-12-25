@@ -4,9 +4,9 @@ import com.modsen.booktrackerservice.domain.exception.DuplicateResourceException
 import com.modsen.booktrackerservice.domain.exception.ResourceNotFoundException;
 import com.modsen.booktrackerservice.repository.TrackerRepository;
 import com.modsen.booktrackerservice.service.impl.TrackerServiceImpl;
-import com.modsen.booktrackerservice.web.dto.TrackerDto;
-import com.modsen.booktrackerservice.web.dto.trackerStatusRequest;
-import com.modsen.booktrackerservice.web.mapper.TrackMapper;
+import com.modsen.booktrackerservice.dto.TrackerDto;
+import com.modsen.booktrackerservice.dto.trackerStatusRequest;
+import com.modsen.booktrackerservice.mapper.TrackMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -103,44 +103,6 @@ public class TrackerServiceImplTest {
         });
         assertEquals("Tracker already exists", exception.getMessage());
         verify(trackerRepository, times(1)).findById(bookId);
-    }
-
-    @Test
-    void testSoftDeleteTrackerByBookId_TrackerExists() {
-        Long bookId = 1L;
-        Tracker tracker = new Tracker();
-        when(trackerRepository.findTrackerByBookId(bookId)).thenReturn(Optional.of(tracker));
-
-        trackerService.softDeleteTrackerByBookId(bookId);
-
-        assertTrue(tracker.getDeleted());
-        verify(trackerRepository, times(1)).findTrackerByBookId(bookId);
-        verify(trackerRepository, times(1)).save(tracker);
-    }
-
-    @Test
-    void testReceiveCreateMessage_ValidMessage() {
-        String message = "create,1";
-        Tracker tracker = new Tracker();
-        when(trackerRepository.save(any())).thenReturn(tracker);
-
-        trackerService.receiveCreateMessage(message);
-
-        verify(trackerRepository, times(1)).save(any());
-    }
-
-
-    @Test
-    void testReceiveSoftDeleteMessage_ValidMessage() {
-        String message = "delete,1";
-        Tracker tracker = new Tracker();
-        when(trackerRepository.findTrackerByBookId(1L)).thenReturn(Optional.of(tracker));
-
-        trackerService.receiveSoftDeleteMessage(message);
-
-        assertTrue(tracker.getDeleted());
-        verify(trackerRepository, times(1)).findTrackerByBookId(1L);
-        verify(trackerRepository, times(1)).save(tracker);
     }
 
     @Test

@@ -1,8 +1,8 @@
 package com.modsen.booktrackerservice.service;
 
 
-import com.modsen.booktrackerservice.web.dto.TrackerDto;
-import com.modsen.booktrackerservice.web.dto.trackerStatusRequest;
+import com.modsen.booktrackerservice.dto.TrackerDto;
+import com.modsen.booktrackerservice.dto.trackerStatusRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public interface TrackerService {
 
     TrackerDto updateTracker(TrackerDto trackerDto);
 
-    void softDeleteTrackerById(Long Id);
+    void deleteTrackerById(Long Id);
 
-    void softDeleteTrackerByBookId(Long bookId);
+    void deleteTrackerByBookId(Long bookId);
 }

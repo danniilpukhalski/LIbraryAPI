@@ -1,11 +1,11 @@
-package com.modsen.booktrackerservice.web.controller;
+package com.modsen.booktrackerservice.controller;
 
 
 import com.modsen.booktrackerservice.service.TrackerService;
-import com.modsen.booktrackerservice.web.dto.TrackerDto;
-import com.modsen.booktrackerservice.web.dto.CreateTrackerRequest;
-import com.modsen.booktrackerservice.web.dto.trackerStatusRequest;
-import com.modsen.booktrackerservice.web.dto.validation.OnUpdate;
+import com.modsen.booktrackerservice.dto.TrackerDto;
+import com.modsen.booktrackerservice.dto.CreateTrackerRequest;
+import com.modsen.booktrackerservice.dto.trackerStatusRequest;
+import com.modsen.booktrackerservice.dto.validation.OnUpdate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,7 @@ public class TrackerController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteTrackerById(@PathVariable Long id) {
-        trackerService.softDeleteTrackerById(id);
+        trackerService.deleteTrackerById(id);
 
     }
 
@@ -68,7 +68,7 @@ public class TrackerController {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteTrackerBookById(@PathVariable Long bookId) {
 
-        trackerService.softDeleteTrackerByBookId(bookId);
+        trackerService.deleteTrackerByBookId(bookId);
     }
 
     @Transactional
