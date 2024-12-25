@@ -114,7 +114,7 @@ public class TrackerServiceImpl implements TrackerService {
         }
     }
 
-    @RabbitListener(queues = "soft_delete_book_queue")
+    @RabbitListener(queues = "delete_book_queue")
     public void receiveSoftDeleteMessage(String message) {
         String[] parts = message.split(",");
         String action = parts[0];

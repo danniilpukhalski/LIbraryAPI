@@ -8,13 +8,16 @@ import com.modsen.bookstorageservice.web.dto.auth.JwtRequest;
 import com.modsen.bookstorageservice.web.dto.auth.JwtResponse;
 import com.modsen.bookstorageservice.web.mapper.UserMapper;
 import com.modsen.bookstorageservice.web.security.JwtTokenProvider;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthServiceImpl implements AuthService {
 
     AuthenticationManager authenticationManager;

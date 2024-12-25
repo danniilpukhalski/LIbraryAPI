@@ -7,7 +7,6 @@ import com.modsen.bookstorageservice.web.dto.auth.JwtResponse;
 import com.modsen.bookstorageservice.web.mapper.UserMapper;
 import com.modsen.bookstorageservice.web.security.JwtTokenProvider;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,14 +33,15 @@ public class AuthServiceImplTest {
 
     @Mock
     private UserMapper userMapper;
+
     @InjectMocks
     private AuthServiceImpl authService;
 
-    private JwtRequest loginRequest;
-    private UserDto userDto;
+    private static JwtRequest loginRequest;
+    private static UserDto userDto;
 
-    @BeforeEach
-    public void setUp() {
+    @BeforeAll
+    static void beforeAll() {
         loginRequest = new JwtRequest("testUsername", "testPassword");
         userDto = new UserDto();
         userDto.setUsername("testUsername");

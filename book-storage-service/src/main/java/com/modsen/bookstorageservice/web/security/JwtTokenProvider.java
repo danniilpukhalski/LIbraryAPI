@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = false)
 public class JwtTokenProvider {
+
     final JwtProperties jwtProperties;
     final UserDetailsService userDetailsService;
     final UserService userService;

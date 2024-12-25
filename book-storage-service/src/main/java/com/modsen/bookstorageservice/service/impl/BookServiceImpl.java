@@ -27,13 +27,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto getBookById(Long id) {
         return bookMapper.toDto(bookRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Book not found")));
+                new ResourceNotFoundException("Book with id " + id + " not found")));
     }
 
     @Override
     public BookDto getBookByIsbn(String isbn) {
         return bookMapper.toDto(bookRepository.findByIsbn(isbn).orElseThrow(() ->
-                new ResourceNotFoundException("Book not found")));
+                new ResourceNotFoundException("Book with isbn " +isbn + " not found")));
 
     }
 
@@ -46,10 +46,10 @@ public class BookServiceImpl implements BookService {
     public BookDto createBook(BookDto bookDto) {
         Book book = bookMapper.toEntity(bookDto);
         if (bookRepository.findByIsbn(book.getIsbn()).isPresent()) {
-            throw new DuplicateResourceException("Book already exists");
+            throw new DuplicateResourceException("Book with isbn " + bookDto.getIsbn() + " already exists");
         }
         bookRepository.save(book);
-        rabbitService.addCreateBook(bookDto.getId());
+        rabbitService.addCreateBook(book.getId());
         return bookMapper.toDto(book);
     }
 
@@ -57,7 +57,7 @@ public class BookServiceImpl implements BookService {
     public BookDto updateBook(BookDto bookDto) {
         Book book = bookMapper.toEntity(bookDto);
         bookRepository.findById(book.getId()).orElseThrow(() ->
-                new ResourceNotFoundException("Book not found"));
+                new ResourceNotFoundException("Book with id " + bookDto.getId() + " not found"));
 
         bookRepository.save(book);
         return bookDto;

@@ -5,6 +5,7 @@ import com.modsen.bookstorageservice.repository.UserRepository;
 import com.modsen.bookstorageservice.service.impl.UserServiceImpl;
 import com.modsen.bookstorageservice.web.dto.UserDto;
 import com.modsen.bookstorageservice.web.mapper.UserMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -37,8 +38,8 @@ class UserServiceImplTest {
     private static User user;
     private static UserDto userDto;
 
-    public static void setUpBeforeAll() {
-        // Это выполняется один раз для всего класса
+    @BeforeAll
+    static void setUpBeforeAll() {
         user = new User();
         user.setId(1L);
         user.setUsername("testUser");
@@ -111,7 +112,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testUpdateUser_NotFound(){
+    void testUpdateUser_NotFound() {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
         userDto.setUsername("existingUser");
@@ -124,25 +125,24 @@ class UserServiceImplTest {
 
     @Test
     void testUpdateUser_UsernameAlreadyExists() {
-            // Arrange
-            UserDto userDto = new UserDto();
-            userDto.setId(1L);
-            userDto.setUsername("existingUser");
+        // Arrange
+        UserDto userDto = new UserDto();
+        userDto.setId(1L);
+        userDto.setUsername("existingUser");
 
-            User existingUser = new User();
-            existingUser.setId(2L);
-            existingUser.setUsername("existingUser");
+        User existingUser = new User();
+        existingUser.setId(2L);
+        existingUser.setUsername("existingUser");
 
-            when(userRepository.findById(1L)).thenReturn(Optional.of(new User())); // user is found
-            when(userRepository.findByUsername("existingUser")).thenReturn(Optional.of(existingUser));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(new User())); // user is found
+        when(userRepository.findByUsername("existingUser")).thenReturn(Optional.of(existingUser));
 
-            // Act & Assert
-            DuplicateResourceException exception = assertThrows(DuplicateResourceException.class, () -> userService.updateUser(userDto));
-            assertEquals("Username already exists", exception.getMessage());
-            verify(userRepository, times(1)).findById(1L);
-            verify(userRepository, times(2)).findByUsername("existingUser");
-        }
-
+        // Act & Assert
+        DuplicateResourceException exception = assertThrows(DuplicateResourceException.class, () -> userService.updateUser(userDto));
+        assertEquals("Username already exists", exception.getMessage());
+        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(2)).findByUsername("existingUser");
+    }
 
 
     @Test
@@ -190,6 +190,7 @@ class UserServiceImplTest {
 
         verify(userRepository, never()).delete(any(User.class));
     }
+
     @Test
     void testGetAllUsers_WhenUsersExist() {
         List<User> users = new ArrayList<>();
