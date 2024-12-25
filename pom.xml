@@ -11,11 +11,9 @@
     <modules>
         <module>book-storage-service
         </module>
-
         <module>
             book-tracker-service
         </module>
-
     </modules>
 
     <properties>

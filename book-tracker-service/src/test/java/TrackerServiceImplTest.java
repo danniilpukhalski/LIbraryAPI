@@ -192,7 +192,7 @@ public class TrackerServiceImplTest {
         Long id = 1L;
         when(trackerRepository.existsById(id)).thenReturn(true);
 
-        trackerService.softDeleteTrackerById(id);
+        trackerService.deleteTrackerById(id);
 
         verify(trackerRepository, times(1)).existsById(id);
         verify(trackerRepository, times(1)).deleteById(id);
@@ -204,7 +204,7 @@ public class TrackerServiceImplTest {
         when(trackerRepository.existsById(id)).thenReturn(false);
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            trackerService.softDeleteTrackerById(id);
+            trackerService.deleteTrackerById(id);
         });
         assertEquals("Tracker not found", exception.getMessage());
         verify(trackerRepository, times(1)).existsById(id);
@@ -251,7 +251,7 @@ public class TrackerServiceImplTest {
         when(trackerRepository.findTrackerByBookId(bookId)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            trackerService.softDeleteTrackerByBookId(bookId);
+            trackerService.deleteTrackerByBookId(bookId);
         });
         assertEquals("Tracker not found", exception.getMessage());
         verify(trackerRepository, times(1)).findTrackerByBookId(bookId);
