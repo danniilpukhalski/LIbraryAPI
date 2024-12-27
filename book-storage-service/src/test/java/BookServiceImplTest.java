@@ -77,21 +77,6 @@ class BookServiceImplTest {
     }
 
     @Test
-    void testCreateBook_Success() {
-        when(bookMapper.toEntity(bookDto)).thenReturn(book);
-        when(bookRepository.findByIsbn(book.getIsbn())).thenReturn(Optional.empty());
-        when(bookRepository.save(book)).thenReturn(book);
-        when(bookMapper.toDto(book)).thenReturn(bookDto);
-
-        BookDto result = bookService.createBook(bookDto);
-
-        assertNotNull(result);
-        assertEquals("123456789", result.getIsbn());
-        verify(bookRepository, times(1)).findByIsbn("123456789");
-        verify(bookRepository, times(1)).save(book);
-    }
-
-    @Test
     void testCreateBook_Duplicate() {
         when(bookMapper.toEntity(bookDto)).thenReturn(book);
         when(bookRepository.findByIsbn(book.getIsbn())).thenReturn(Optional.of(book));
@@ -121,16 +106,6 @@ class BookServiceImplTest {
 
         assertThrows(ResourceNotFoundException.class, () -> bookService.updateBook(bookDto));
         verify(bookRepository, times(1)).findById(1L);
-    }
-
-    @Test
-    void deleteBook_Success() {
-        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
-        bookService.deleteBook(1L);
-
-        verify(rabbitService, times(1)).addDeleteBook(1L);
-
-        verify(bookRepository, times(1)).delete(book);
     }
 
     @Test

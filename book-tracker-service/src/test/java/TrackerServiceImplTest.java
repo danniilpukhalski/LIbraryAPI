@@ -5,7 +5,7 @@ import com.modsen.booktrackerservice.domain.exception.ResourceNotFoundException;
 import com.modsen.booktrackerservice.repository.TrackerRepository;
 import com.modsen.booktrackerservice.service.impl.TrackerServiceImpl;
 import com.modsen.booktrackerservice.dto.TrackerDto;
-import com.modsen.booktrackerservice.dto.trackerStatusRequest;
+import com.modsen.booktrackerservice.dto.TrackerStatusRequest;
 import com.modsen.booktrackerservice.mapper.TrackMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,7 +55,7 @@ public class TrackerServiceImplTest {
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
             trackerService.getTrackerByBookId(bookId);
         });
-        assertEquals("Tracker not found", exception.getMessage());
+        assertEquals("Tracker with bookId 1 not found", exception.getMessage());
         verify(trackerRepository, times(1)).findTrackerByBookId(bookId);
     }
 
@@ -77,7 +77,7 @@ public class TrackerServiceImplTest {
     @Test
     void testUpdateTrackerStatus_TrackerExists() {
         Long bookId = 1L;
-        trackerStatusRequest request = new trackerStatusRequest();
+        TrackerStatusRequest request = new TrackerStatusRequest();
         request.setStatus("taken");
         Tracker tracker = new Tracker();
         TrackerDto trackerDto = new TrackerDto();
@@ -101,7 +101,7 @@ public class TrackerServiceImplTest {
         Exception exception = assertThrows(DuplicateResourceException.class, () -> {
             trackerService.createTracker(bookId);
         });
-        assertEquals("Tracker already exists", exception.getMessage());
+        assertEquals("Tracker with bookId 1 already exists", exception.getMessage());
         verify(trackerRepository, times(1)).findById(bookId);
     }
 
@@ -128,7 +128,7 @@ public class TrackerServiceImplTest {
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
             trackerService.getTrackerById(id);
         });
-        assertEquals("Tracker not found", exception.getMessage());
+        assertEquals("Tracker with id 1 not found", exception.getMessage());
         verify(trackerRepository, times(1)).findById(id);
     }
     @Test
@@ -183,7 +183,7 @@ public class TrackerServiceImplTest {
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
             trackerService.updateTracker(trackerDto);
         });
-        assertEquals("Tracker not found", exception.getMessage());
+        assertEquals("Tracker with id 1 not found", exception.getMessage());
         verify(trackerRepository, times(1)).findById(trackerDto.getId());
         verify(trackerRepository, never()).save(any());
     }
@@ -206,20 +206,20 @@ public class TrackerServiceImplTest {
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
             trackerService.deleteTrackerById(id);
         });
-        assertEquals("Tracker not found", exception.getMessage());
+        assertEquals("Tracker with id 1 not found", exception.getMessage());
         verify(trackerRepository, times(1)).existsById(id);
         verify(trackerRepository, never()).deleteById(any());
     }
     @Test
     void testUpdateTrackerStatus_TrackerNotFound() {
         Long bookId = 1L;
-        trackerStatusRequest request = new trackerStatusRequest();
+        TrackerStatusRequest request = new TrackerStatusRequest();
         request.setStatus("taken");
         when(trackerRepository.findTrackerByBookId(bookId)).thenReturn(Optional.empty());
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
             trackerService.updateTrackerStatus(bookId, request);
         });
-        assertEquals("Tracker not found", exception.getMessage());
+        assertEquals("Tracker with bookId 1 not found", exception.getMessage());
         verify(trackerRepository, times(1)).findTrackerByBookId(bookId);
         verify(trackerRepository, never()).save(any());
         verify(trackMapper, never()).toTrackerDto(any(Tracker.class));
@@ -228,7 +228,7 @@ public class TrackerServiceImplTest {
     @Test
     void testUpdateTrackerStatus_ElseBranch() {
         Long bookId = 1L;
-        trackerStatusRequest request = new trackerStatusRequest();
+        TrackerStatusRequest request = new TrackerStatusRequest();
         request.setStatus("returned");
         Tracker tracker = new Tracker();
         TrackerDto trackerDto = new TrackerDto();
@@ -253,7 +253,7 @@ public class TrackerServiceImplTest {
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
             trackerService.deleteTrackerByBookId(bookId);
         });
-        assertEquals("Tracker not found", exception.getMessage());
+        assertEquals("Tracker with id 1 not found", exception.getMessage());
         verify(trackerRepository, times(1)).findTrackerByBookId(bookId);
         verify(trackerRepository, never()).save(any());
     }

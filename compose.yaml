@@ -1,0 +1,35 @@
+
+services:
+  combined-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: combined-service-container
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/library
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1111
+      - SECRET_KEY=amhnY3Ziamtqa2hnZmZjZnZibmJ2Y2dlcmhmamdoa3ZjZ2ZnaGosYnZjZmdqaGJ2Y2ZnaGI=
+      - ACCESS_DURATION=3600000
+      - REFRESH_DURATION=259200000
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-container
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1111
+      POSTGRES_DB: library
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

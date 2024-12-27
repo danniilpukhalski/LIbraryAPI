@@ -4,7 +4,7 @@ import com.modsen.booktrackerservice.domain.Tracker;
 import com.modsen.booktrackerservice.domain.exception.DuplicateResourceException;
 import com.modsen.booktrackerservice.domain.exception.ResourceNotFoundException;
 import com.modsen.booktrackerservice.dto.TrackerDto;
-import com.modsen.booktrackerservice.dto.trackerStatusRequest;
+import com.modsen.booktrackerservice.dto.TrackerStatusRequest;
 import com.modsen.booktrackerservice.mapper.TrackMapper;
 import com.modsen.booktrackerservice.repository.TrackerRepository;
 import com.modsen.booktrackerservice.service.TrackerService;
@@ -31,7 +31,7 @@ public class TrackerServiceImpl implements TrackerService {
     @Override
     public TrackerDto getTrackerByBookId(Long bookId) {
         return trackMapper.toTrackerDto(trackerRepository.findTrackerByBookId(bookId).orElseThrow(() ->
-                new ResourceNotFoundException("Tracker with bookId " + bookId + "not found")));
+                new ResourceNotFoundException("Tracker with bookId " + bookId + " not found")));
 
     }
 
@@ -39,7 +39,7 @@ public class TrackerServiceImpl implements TrackerService {
     @Override
     public TrackerDto getTrackerById(Long id) {
         return trackMapper.toTrackerDto(trackerRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Tracker with id" + id + "not found")));
+                new ResourceNotFoundException("Tracker with id " + id + " not found")));
     }
 
     @Override
@@ -49,9 +49,9 @@ public class TrackerServiceImpl implements TrackerService {
     }
 
     @Override
-    public TrackerDto updateTrackerStatus(Long bookId, trackerStatusRequest trackerStatusRequest) {
+    public TrackerDto updateTrackerStatus(Long bookId, TrackerStatusRequest trackerStatusRequest) {
         Tracker tracker = trackerRepository.findTrackerByBookId(bookId).orElseThrow(() ->
-                new ResourceNotFoundException("Tracker with bookId" + bookId + " not found"));
+                new ResourceNotFoundException("Tracker with bookId " + bookId + " not found"));
         assert tracker != null;
         if (trackerStatusRequest.getStatus().equals("taken")) {
             tracker.setTaken(LocalDate.now());
@@ -72,7 +72,7 @@ public class TrackerServiceImpl implements TrackerService {
     @Override
     public TrackerDto createTracker(Long bookId) {
         if (trackerRepository.findById(bookId).isPresent()) {
-            throw new DuplicateResourceException("Tracker with bookId" + bookId + " already exists");
+            throw new DuplicateResourceException("Tracker with bookId " + bookId + " already exists");
         }
         Tracker tracker = new Tracker();
         tracker.setBookId(bookId);

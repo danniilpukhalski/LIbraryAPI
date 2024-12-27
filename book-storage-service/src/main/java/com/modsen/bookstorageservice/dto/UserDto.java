@@ -2,8 +2,10 @@ package com.modsen.bookstorageservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.modsen.bookstorageservice.domain.Role;
+import com.modsen.bookstorageservice.domain.User;
 import com.modsen.bookstorageservice.dto.validation.OnUpdate;
 import com.modsen.bookstorageservice.dto.validation.OnCreate;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -19,6 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Schema(implementation = User.class)
 public class UserDto {
 
     @NotNull(message = "Id must be not null", groups = OnUpdate.class)
@@ -32,6 +35,7 @@ public class UserDto {
     @NotEmpty(message = "Password must be not null", groups = {OnUpdate.class, OnCreate.class})
     @Length(min = 4, max = 255)
     String password;
+
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotEmpty(message = "Password confirmation must be not null", groups = OnCreate.class)

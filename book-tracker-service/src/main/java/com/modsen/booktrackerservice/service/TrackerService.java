@@ -2,7 +2,7 @@ package com.modsen.booktrackerservice.service;
 
 
 import com.modsen.booktrackerservice.dto.TrackerDto;
-import com.modsen.booktrackerservice.dto.trackerStatusRequest;
+import com.modsen.booktrackerservice.dto.TrackerStatusRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public interface TrackerService {
 
     List<TrackerDto> getTrackersWhereStatusIsFree();
 
-    TrackerDto updateTrackerStatus(Long bookId, trackerStatusRequest trackerStatusRequest);
+    TrackerDto updateTrackerStatus(Long bookId, TrackerStatusRequest trackerStatusRequest);
 
     List<TrackerDto> getAllTrackers();
 

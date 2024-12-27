@@ -65,9 +65,12 @@ public class ApplicationConfig {
                                         }
                                 ))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/books").hasRole("USER")
+                       .requestMatchers("/api/v1/auth/**").permitAll()
+                       .requestMatchers("/api/v1/books").hasRole("USER")
                         .requestMatchers("/api/v1/user").hasRole("USER")
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

@@ -4,8 +4,10 @@ package com.modsen.booktrackerservice.controller;
 import com.modsen.booktrackerservice.service.TrackerService;
 import com.modsen.booktrackerservice.dto.TrackerDto;
 import com.modsen.booktrackerservice.dto.CreateTrackerRequest;
-import com.modsen.booktrackerservice.dto.trackerStatusRequest;
+import com.modsen.booktrackerservice.dto.TrackerStatusRequest;
 import com.modsen.booktrackerservice.dto.validation.OnUpdate;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +22,12 @@ import java.util.List;
 @RequestMapping("api/v1/book-track")
 @RequiredArgsConstructor
 @Validated
+@Tag(description = "Tracker controller",name = "TrackerAPI")
 public class TrackerController {
 
     private final TrackerService trackerService;
 
+    @Operation(summary = "Get tracker by id")
     @Transactional
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
@@ -32,6 +36,7 @@ public class TrackerController {
         return trackerService.getTrackerById(id);
     }
 
+    @Operation(summary = "Get tracker by book id")
     @Transactional
     @GetMapping("/get-by-book-id/{bookId}")
     @PreAuthorize("hasRole('USER')")
@@ -39,6 +44,7 @@ public class TrackerController {
         return trackerService.getTrackerByBookId(bookId);
     }
 
+    @Operation(summary = "Get all trackers")
     @Transactional
     @GetMapping("/get-all")
     @PreAuthorize("hasRole('USER')")
@@ -47,6 +53,7 @@ public class TrackerController {
         return trackerService.getAllTrackers();
     }
 
+    @Operation(summary = "Get all free trackers")
     @Transactional
     @GetMapping("/get-all/free")
     @PreAuthorize("hasRole('USER')")
@@ -55,6 +62,7 @@ public class TrackerController {
         return trackerService.getTrackersWhereStatusIsFree();
     }
 
+    @Operation(summary = "Delete tracker by id")
     @Transactional
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -63,6 +71,7 @@ public class TrackerController {
 
     }
 
+    @Operation(summary = "Delete tracker by book id")
     @Transactional
     @DeleteMapping("/delete-by-book-id/{bookId}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -71,13 +80,15 @@ public class TrackerController {
         trackerService.deleteTrackerByBookId(bookId);
     }
 
+    @Operation(summary = "Update tracker status")
     @Transactional
     @PutMapping("/update-status/{bookId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public TrackerDto updateTrackerStatus(@RequestBody @Valid trackerStatusRequest trackerStatusRequest, @PathVariable("bookId") Long bookId) {
+    public TrackerDto updateTrackerStatus(@RequestBody @Valid TrackerStatusRequest trackerStatusRequest, @PathVariable("bookId") Long bookId) {
         return trackerService.updateTrackerStatus(bookId, trackerStatusRequest);
     }
 
+    @Operation(summary = "update tracker")
     @Transactional
     @PutMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
@@ -86,6 +97,7 @@ public class TrackerController {
         return trackerDto;
     }
 
+    @Operation(summary = "Create tracker")
     @Transactional
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")

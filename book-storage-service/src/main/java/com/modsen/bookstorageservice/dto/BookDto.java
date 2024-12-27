@@ -1,7 +1,9 @@
 package com.modsen.bookstorageservice.dto;
 
+import com.modsen.bookstorageservice.domain.Book;
 import com.modsen.bookstorageservice.dto.validation.OnCreate;
 import com.modsen.bookstorageservice.dto.validation.OnUpdate;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -14,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Schema(implementation = Book.class)
 public class BookDto {
 
     @NotNull(message = "Id must be non null", groups = OnUpdate.class)

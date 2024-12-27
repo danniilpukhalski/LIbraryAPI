@@ -3,7 +3,9 @@ package com.modsen.booktrackerservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.modsen.booktrackerservice.domain.Tracker;
 import com.modsen.booktrackerservice.dto.validation.OnUpdate;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -13,6 +15,7 @@ import java.time.LocalDate;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Schema(implementation = Tracker.class)
 public class TrackerDto {
 
     @NotNull(message = "id must be not null", groups = OnUpdate.class)

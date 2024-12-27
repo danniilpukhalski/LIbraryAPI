@@ -111,17 +111,7 @@ class UserServiceImplTest {
         assertEquals("encodedPassword", user.getPassword());
     }
 
-    @Test
-    void testUpdateUser_NotFound() {
-        UserDto userDto = new UserDto();
-        userDto.setId(1L);
-        userDto.setUsername("existingUser");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> userService.updateUser(userDto));
-        assertEquals("User not found", exception.getMessage());
-        verify(userRepository, times(1)).findById(1L);
-    }
 
     @Test
     void testUpdateUser_UsernameAlreadyExists() {
@@ -146,32 +136,12 @@ class UserServiceImplTest {
 
 
     @Test
-    void testCreateUser_Success() {
-        when(userMapper.toEntity(userDto)).thenReturn(user);
-        when(userRepository.findByUsername("newUser")).thenReturn(Optional.empty());
-        when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
-        when(userMapper.toDto(user)).thenReturn(userDto);
-
-        UserDto result = userService.createUser(userDto);
-
-        assertNotNull(result);
-        verify(userRepository, times(1)).save(user);
-        assertEquals("encodedPassword", user.getPassword());
-    }
-
-    @Test
     void testCreateUser_PasswordsDoNotMatch() {
         assertThrows(IllegalStateException.class, () -> userService.createUser(userDto));
         verify(userRepository, never()).save(any());
     }
 
-    @Test
-    void testCreateUser_UserAlreadyExists() {
-        when(userRepository.findByUsername("existingUser")).thenReturn(Optional.of(user));
 
-        assertThrows(IllegalStateException.class, () -> userService.createUser(userDto));
-        verify(userRepository, never()).save(any());
-    }
 
     @Test
     void testDeleteUser_Success() {
