@@ -7,6 +7,7 @@ import com.modsen.booktrackerservice.dto.CreateTrackerRequest;
 import com.modsen.booktrackerservice.dto.TrackerStatusRequest;
 import com.modsen.booktrackerservice.dto.validation.OnUpdate;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ import java.util.List;
 @RequestMapping("api/v1/book-track")
 @RequiredArgsConstructor
 @Validated
+@SecurityRequirement(name = "bearerAuth")
 @Tag(description = "Tracker controller",name = "TrackerAPI")
 public class TrackerController {
 

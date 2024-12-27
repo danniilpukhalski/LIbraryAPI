@@ -1,4 +1,4 @@
-package com.modsen.bookstorageservice.config;
+package com.modsen.booktrackerservice.config;
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -19,8 +19,8 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Library API")
+                        .title("My API")
                         .version("1.0")
-                        .description(""));
+                        .description("API documentation with JWT authentication"));
     }
 }
