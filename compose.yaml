@@ -1,13 +1,20 @@
-
 services:
-  combined-service:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:8088"
+      - "15672:8089"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+  book-storage:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: combined-service-container
+      dockerfile: DockerfileBookStorage
+    container_name: book-storage-container
     ports:
       - "8080:8080"
-      - "8081:8081"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/library
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -17,6 +24,26 @@ services:
       - REFRESH_DURATION=259200000
     depends_on:
       - postgres
+  book-tracker:
+    build:
+      context: .
+      dockerfile: DockerfileBookTracker
+    container_name: book-tracker-container
+    ports:
+        - "8081:8081"
+    environment:
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/library?currentSchema=library_schema
+        - SPRING_DATASOURCE_USERNAME=postgres
+        - SPRING_DATASOURCE_PASSWORD=1111
+        - SECRET_KEY=amhnY3Ziamtqa2hnZmZjZnZibmJ2Y2dlcmhmamdoa3ZjZ2ZnaGosYnZjZmdqaGJ2Y2ZnaGI=
+        - ACCESS_DURATION=3600000
+        - REFRESH_DURATION=259200000
+        - SPRING_RABBITMQ_HOST=rabbitmq   # Добавьте эту строку для указания имени хоста RabbitMQ
+        - SPRING_RABBITMQ_PORT=5672
+    depends_on:
+      - postgres
+      - rabbitmq
+      - book-storage
 
   postgres:
     image: postgres:15
