@@ -1,7 +1,7 @@
-1.Клонируйте репозиторий
+1.Clone repository
 
-2.Создайте базу данных library (postgreSQL). В программе написана миграция бд, поэтому схема и таблицы будут созданы автоматически. 
+2. Use commands "docker-compose biuld" and "docker compose up" in project derictory to run application in docker
 
-3.Запустите проект (микросервис storage на порте 8080, tracker - 8081)
+3.BookStorageService will be on port 8080, BookTrackerService - 8081
 
-4.Для тестирования воспользуйтес коллекцией постман https://web.postman.co/workspace/LibraryAPI~95190b33-36f6-49de-97a0-6eb2f9a7c857/collection/40113313-3db94657-0598-4595-b5ec-52fd4de111bc?action=share&source=copy-link&creator=40113313
+4.For testing you can use this postman collection: https://www.postman.com/altimetry-cosmologist-82735247/workspace/library-api or swagger 
