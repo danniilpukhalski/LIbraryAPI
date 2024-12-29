@@ -10,6 +10,7 @@ import com.modsen.bookstorageservice.service.impl.BookServiceImpl;
 import com.modsen.bookstorageservice.dto.BookDto;
 import com.modsen.bookstorageservice.mapper.BookMapper;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("BookService tests")
 class BookServiceImplTest {
 
     @Mock
@@ -56,7 +58,8 @@ class BookServiceImplTest {
     }
 
     @Test
-    void testGetBookById_Success() {
+    @DisplayName("testGetBookByIdSuccess")
+    void testGetBookByIdSuccess() {
         when(bookRepository.findById(book.getId())).thenReturn(Optional.of(book));
         when(bookMapper.toDto(book)).thenReturn(bookDto);
 
@@ -68,7 +71,8 @@ class BookServiceImplTest {
     }
 
     @Test
-    void testGetBookById_NotFound() {
+    @DisplayName("testGetBookByIdNotFound")
+    void testGetBookByIdNotFound() {
 
         when(bookRepository.findById(book.getId())).thenReturn(Optional.empty());
 
@@ -77,7 +81,8 @@ class BookServiceImplTest {
     }
 
     @Test
-    void testCreateBook_Duplicate() {
+    @DisplayName("testCreateBookDuplicate")
+    void testCreateBookDuplicate() {
         when(bookMapper.toEntity(bookDto)).thenReturn(book);
         when(bookRepository.findByIsbn(book.getIsbn())).thenReturn(Optional.of(book));
 
@@ -86,7 +91,8 @@ class BookServiceImplTest {
     }
 
     @Test
-    void testUpdateBook_Success() {
+    @DisplayName("testUpdateBookSuccess")
+    void testUpdateBookSuccess() {
         when(bookMapper.toEntity(bookDto)).thenReturn(book);
         when(bookRepository.findById(book.getId())).thenReturn(Optional.of(book));
         when(bookRepository.save(book)).thenReturn(book);
@@ -100,6 +106,7 @@ class BookServiceImplTest {
     }
 
     @Test
+    @DisplayName("testGetBookByIdSuccess")
     void testUpdateBook_NotFound() {
         when(bookMapper.toEntity(bookDto)).thenReturn(book);
         when(bookRepository.findById(book.getId())).thenReturn(Optional.empty());
@@ -109,7 +116,8 @@ class BookServiceImplTest {
     }
 
     @Test
-    void deleteBook_BookNotFound() {
+    @DisplayName("deleteBookBookNotFound")
+    void deleteBookBookNotFound() {
         when(bookRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> bookService.deleteBook(1L));
@@ -120,7 +128,8 @@ class BookServiceImplTest {
 
 
     @Test
-    void testGetBookByIsbn_Success() {
+    @DisplayName("testGetBookByIsbnSuccess")
+    void testGetBookByIsbnSuccess() {
         when(bookRepository.findByIsbn(book.getIsbn())).thenReturn(Optional.of(book));
         when(bookMapper.toDto(book)).thenReturn(bookDto);
 
@@ -132,7 +141,8 @@ class BookServiceImplTest {
     }
 
     @Test
-    void testGetBookByIsbn_NotFound() {
+    @DisplayName("testGetBookByIsbnNotFound")
+    void testGetBookByIsbnNotFound() {
         String isbn = "1234567890";
         when(bookRepository.findByIsbn(isbn)).thenReturn(Optional.empty());
 
@@ -141,6 +151,7 @@ class BookServiceImplTest {
     }
 
     @Test
+    @DisplayName("testGetAllBooksWhenBooksExist")
     void testGetAllBooksWhenBooksExist() {
         List<Book> books = List.of(
                 new Book(1L, "978-3-16-1485678410-0", "A Clockwork Orange", "Fantasy", "A thought-provoking novel about free will and morality.",
@@ -169,6 +180,7 @@ class BookServiceImplTest {
 
 
     @Test
+    @DisplayName("testGetAllBooksWhenNoBooksExist")
     void testGetAllBooksWhenNoBooksExist() {
         when(bookRepository.findAll()).thenReturn(Collections.emptyList());
         when(bookMapper.toDto(Collections.emptyList())).thenReturn(Collections.emptyList());

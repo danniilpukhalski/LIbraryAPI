@@ -6,6 +6,7 @@ import com.modsen.bookstorageservice.mapper.UserMapper;
 import com.modsen.bookstorageservice.repository.UserRepository;
 import com.modsen.bookstorageservice.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("UserService tests")
 class UserServiceImplTest {
 
     @Mock
@@ -52,7 +54,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testGetUserById_Success() {
+    @DisplayName("testGetUserByIdSuccess")
+    void testGetUserByIdSuccess() {
 
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(userMapper.toDto(user)).thenReturn(userDto);
@@ -66,7 +69,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testGetUserById_NotFound() {
+    @DisplayName("testGetUserByIdNotFound")
+    void testGetUserByIdNotFound() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> userService.getUserById(userDto.getId()));
@@ -75,7 +79,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testGetUserByUsername_Success() {
+    @DisplayName("testGetUserByUsernameSuccess")
+    void testGetUserByUsernameSuccess() {
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
         when(userMapper.toDto(user)).thenReturn(userDto);
 
@@ -88,6 +93,7 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("testGetUserByUsernameNotFound")
     void testGetUserByUsername_NotFound() {
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.empty());
 
@@ -97,7 +103,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testUpdateUser_Success() {
+    @DisplayName("testUpdateUserSuccess")
+    void testUpdateUserSuccess() {
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userMapper.toEntity(userDto)).thenReturn(user);
@@ -113,7 +120,8 @@ class UserServiceImplTest {
 
 
     @Test
-    void testUpdateUser_UsernameAlreadyExists() {
+    @DisplayName("testUpdateUserUsernameAlreadyExists")
+    void testUpdateUserUsernameAlreadyExists() {
         // Arrange
         UserDto userDto = new UserDto();
         userDto.setId(1L);
@@ -135,14 +143,16 @@ class UserServiceImplTest {
 
 
     @Test
-    void testCreateUser_PasswordsDoNotMatch() {
+    @DisplayName("testCreateUserPasswordsDoNotMatch")
+    void testCreateUserPasswordsDoNotMatch() {
         assertThrows(IllegalStateException.class, () -> userService.createUser(userDto));
         verify(userRepository, never()).save(any());
     }
 
 
     @Test
-    void testDeleteUser_Success() {
+    @DisplayName("testDeleteUserSuccess")
+    void testDeleteUserSuccess() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         userService.deleteUser(user.getId());
@@ -151,7 +161,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testDeleteUser_UserNotFound() {
+    @DisplayName("testDeleteUserUserNotFound")
+    void testDeleteUserUserNotFound() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> userService.deleteUser(user.getId()));
@@ -160,7 +171,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testGetAllUsers_WhenUsersExist() {
+    @DisplayName("testGetAllUsersWhenUsersExist")
+    void testGetAllUsersWhenUsersExist() {
         List<User> users = new ArrayList<>();
         users.add(new User());
         users.add(new User());

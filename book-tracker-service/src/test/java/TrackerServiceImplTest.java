@@ -6,6 +6,7 @@ import com.modsen.booktrackerservice.dto.TrackerStatusRequest;
 import com.modsen.booktrackerservice.mapper.TrackMapper;
 import com.modsen.booktrackerservice.repository.TrackerRepository;
 import com.modsen.booktrackerservice.service.impl.TrackerServiceImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("TrackerService tests")
 public class TrackerServiceImplTest {
 
     @Mock
@@ -32,7 +34,8 @@ public class TrackerServiceImplTest {
     private TrackerServiceImpl trackerService;
 
     @Test
-    void testGetTrackerByBookId_TrackerExists() {
+    @DisplayName("testGetTrackerByBookIdTrackerExists")
+    void testGetTrackerByBookIdTrackerExists() {
         Long bookId = 1L;
         Tracker tracker = new Tracker();
         TrackerDto trackerDto = new TrackerDto();
@@ -47,7 +50,8 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testGetTrackerByBookId_TrackerNotFound() {
+    @DisplayName("testGetTrackerByBookIdTrackerNotFound")
+    void testGetTrackerByBookIdTrackerNotFound() {
         Long bookId = 1L;
         when(trackerRepository.findTrackerByBookId(bookId)).thenReturn(Optional.empty());
 
@@ -59,6 +63,7 @@ public class TrackerServiceImplTest {
     }
 
     @Test
+    @DisplayName("testGetAllTrackers")
     void testGetAllTrackers() {
         List<Tracker> trackers = Arrays.asList(new Tracker(), new Tracker());
         List<TrackerDto> trackerDtos = Arrays.asList(new TrackerDto(), new TrackerDto());
@@ -74,7 +79,8 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testUpdateTrackerStatus_TrackerExists() {
+    @DisplayName("testUpdateTrackerStatusTrackerExists")
+    void testUpdateTrackerStatusTrackerExists() {
         Long bookId = 1L;
         TrackerStatusRequest request = new TrackerStatusRequest();
         request.setStatus("taken");
@@ -93,7 +99,8 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testCreateTracker_TrackerAlreadyExists() {
+    @DisplayName("testCreateTrackerTrackerAlreadyExists")
+    void testCreateTrackerTrackerAlreadyExists() {
         Long bookId = 1L;
         when(trackerRepository.findById(bookId)).thenReturn(Optional.of(new Tracker()));
 
@@ -105,7 +112,8 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testGetTrackerById_TrackerExists() {
+    @DisplayName("testGetTrackerByIdTrackerExists")
+    void testGetTrackerByIdTrackerExists() {
         Long id = 1L;
         Tracker tracker = new Tracker();
         TrackerDto trackerDto = new TrackerDto();
@@ -120,7 +128,8 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testGetTrackerById_TrackerNotFound() {
+    @DisplayName("testGetTrackerByIdTrackerNotFound")
+    void testGetTrackerByIdTrackerNotFound() {
         Long id = 1L;
         when(trackerRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -131,7 +140,8 @@ public class TrackerServiceImplTest {
         verify(trackerRepository, times(1)).findById(id);
     }
     @Test
-    void testGetTrackersWhereStatusIsFree_StatusFreeExists() {
+    @DisplayName("testGetTrackersWhereStatusIsFreeStatusFreeExists")
+    void testGetTrackersWhereStatusIsFreeStatusFreeExists() {
         List<Tracker> trackers = Arrays.asList(new Tracker(), new Tracker());
         List<TrackerDto> trackerDtos = Arrays.asList(new TrackerDto(), new TrackerDto());
         when(trackerRepository.findTrackerByStatus("free")).thenReturn(trackers);
@@ -146,7 +156,8 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testGetTrackersWhereStatusIsFree_StatusFreeNotFound() {
+    @DisplayName("testGetTrackersWhereStatusIsFreeStatusFreeNotFound")
+    void testGetTrackersWhereStatusIsFreeStatusFreeNotFound() {
         when(trackerRepository.findTrackerByStatus("free")).thenReturn(List.of());
 
         List<TrackerDto> result = trackerService.getTrackersWhereStatusIsFree();
@@ -158,7 +169,8 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testUpdateTracker_TrackerExists() {
+    @DisplayName("testUpdateTrackerTrackerExists")
+    void testUpdateTrackerTrackerExists() {
         TrackerDto trackerDto = new TrackerDto();
         trackerDto.setId(1L);
         Tracker tracker = new Tracker();
@@ -174,7 +186,8 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testUpdateTracker_TrackerNotFound() {
+    @DisplayName("testUpdateTrackerTrackerNotFound")
+    void testUpdateTrackerTrackerNotFound() {
         TrackerDto trackerDto = new TrackerDto();
         trackerDto.setId(1L);
         when(trackerRepository.findById(trackerDto.getId())).thenReturn(Optional.empty());
@@ -187,7 +200,8 @@ public class TrackerServiceImplTest {
         verify(trackerRepository, never()).save(any());
     }
     @Test
-    void testSoftDeleteTrackerById_TrackerExists() {
+    @DisplayName("testDeleteTrackerByIdTrackerExists")
+    void testDeleteTrackerByIdTrackerExists() {
         Long id = 1L;
         when(trackerRepository.existsById(id)).thenReturn(true);
 
@@ -198,7 +212,8 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testSoftDeleteTrackerById_TrackerNotFound() {
+    @DisplayName("testDeleteTrackerByIdTrackerNotFound")
+    void testDeleteTrackerByIdTrackerNotFound() {
         Long id = 1L;
         when(trackerRepository.existsById(id)).thenReturn(false);
 
@@ -210,7 +225,8 @@ public class TrackerServiceImplTest {
         verify(trackerRepository, never()).deleteById(any());
     }
     @Test
-    void testUpdateTrackerStatus_TrackerNotFound() {
+    @DisplayName("testUpdateTrackerStatusTrackerNotFound")
+    void testUpdateTrackerStatusTrackerNotFound() {
         Long bookId = 1L;
         TrackerStatusRequest request = new TrackerStatusRequest();
         request.setStatus("taken");
@@ -225,7 +241,8 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testUpdateTrackerStatus_ElseBranch() {
+    @DisplayName("testUpdateTrackerStatusElseBranch")
+    void testUpdateTrackerStatusElseBranch() {
         Long bookId = 1L;
         TrackerStatusRequest request = new TrackerStatusRequest();
         request.setStatus("returned");
@@ -245,14 +262,15 @@ public class TrackerServiceImplTest {
     }
 
     @Test
-    void testSoftDeleteTrackerByBookId_TrackerNotFound() {
+    @DisplayName("testDeleteTrackerByBookIdTrackerNotFound")
+    void testDeleteTrackerByBookIdTrackerNotFound() {
         Long bookId = 1L;
         when(trackerRepository.findTrackerByBookId(bookId)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
             trackerService.deleteTrackerByBookId(bookId);
         });
-        assertEquals("Tracker with id 1 not found", exception.getMessage());
+        assertEquals("Tracker with bookId 1 not found", exception.getMessage());
         verify(trackerRepository, times(1)).findTrackerByBookId(bookId);
         verify(trackerRepository, never()).save(any());
     }

@@ -49,8 +49,8 @@ public class AuthServiceImplTest {
     }
 
     @Test
-    @DisplayName("testLogin_Success")
-    void testLogin_Success() {
+    @DisplayName("testLoginSuccess")
+    void testLoginSuccess() {
         User user = new User();
         user.setId(1L);
         user.setUsername("testUsername");
@@ -81,8 +81,8 @@ public class AuthServiceImplTest {
     }
 
     @Test
-    @DisplayName("testLogin_AuthenticationFailed")
-    void testLogin_AuthenticationFailed() {
+    @DisplayName("testLoginAuthenticationFailed")
+    void testLoginAuthenticationFailed() {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenThrow(new RuntimeException("Authentication failed"));
 
@@ -93,8 +93,8 @@ public class AuthServiceImplTest {
     }
 
     @Test
-    @DisplayName("testRefresh_Success")
-    void testRefresh_Success() {
+    @DisplayName("testRefreshSuccess")
+    void testRefreshSuccess() {
         JwtResponse jwtResponse = new JwtResponse();
         jwtResponse.setRefreshToken("refreshToken");
         String refreshToken = "validRefreshToken";
@@ -107,8 +107,8 @@ public class AuthServiceImplTest {
     }
 
     @Test
-    @DisplayName("testRegister_Success")
-    void testRegister_Success() {
+    @DisplayName("testRegisterSuccess")
+    void testRegisterSuccess() {
         when(userService.createUser(userDto)).thenReturn(userDto);
 
         UserDto result = authService.register(userDto);
@@ -120,8 +120,8 @@ public class AuthServiceImplTest {
     }
 
     @Test
-    @DisplayName("testRegister_UserAlreadyExists")
-    void testRegister_UserAlreadyExists() {
+    @DisplayName("testRegisterUserAlreadyExists")
+    void testRegisterUserAlreadyExists() {
         when(userService.createUser(userDto)).thenThrow(new RuntimeException("User already exists"));
 
         assertThrows(RuntimeException.class, () -> authService.register(userDto));
