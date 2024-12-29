@@ -3,10 +3,10 @@ package com.modsen.bookstorageservice.service.impl;
 import com.modsen.bookstorageservice.domain.Book;
 import com.modsen.bookstorageservice.domain.exception.DuplicateResourceException;
 import com.modsen.bookstorageservice.domain.exception.ResourceNotFoundException;
-import com.modsen.bookstorageservice.repository.BookRepository;
-import com.modsen.bookstorageservice.service.BookService;
 import com.modsen.bookstorageservice.dto.BookDto;
 import com.modsen.bookstorageservice.mapper.BookMapper;
+import com.modsen.bookstorageservice.repository.BookRepository;
+import com.modsen.bookstorageservice.service.BookService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto getBookByIsbn(String isbn) {
         return bookMapper.toDto(bookRepository.findByIsbn(isbn).orElseThrow(() ->
-                new ResourceNotFoundException("Book with isbn " +isbn + " not found")));
+                new ResourceNotFoundException("Book with isbn " + isbn + " not found")));
 
     }
 
@@ -64,7 +64,7 @@ public class BookServiceImpl implements BookService {
     }
 
     public void deleteBook(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book with " + id + " found"));
         rabbitService.addDeleteBook(book.getId());
         bookRepository.delete(book);
     }

@@ -1,10 +1,10 @@
 import com.modsen.bookstorageservice.domain.User;
 import com.modsen.bookstorageservice.domain.exception.DuplicateResourceException;
 import com.modsen.bookstorageservice.domain.exception.ResourceNotFoundException;
-import com.modsen.bookstorageservice.repository.UserRepository;
-import com.modsen.bookstorageservice.service.impl.UserServiceImpl;
 import com.modsen.bookstorageservice.dto.UserDto;
 import com.modsen.bookstorageservice.mapper.UserMapper;
+import com.modsen.bookstorageservice.repository.UserRepository;
+import com.modsen.bookstorageservice.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -112,7 +112,6 @@ class UserServiceImplTest {
     }
 
 
-
     @Test
     void testUpdateUser_UsernameAlreadyExists() {
         // Arrange
@@ -129,7 +128,7 @@ class UserServiceImplTest {
 
         // Act & Assert
         DuplicateResourceException exception = assertThrows(DuplicateResourceException.class, () -> userService.updateUser(userDto));
-        assertEquals("Username already exists", exception.getMessage());
+        assertEquals("Username " + userDto.getUsername() + " already exists", exception.getMessage());
         verify(userRepository, times(1)).findById(1L);
         verify(userRepository, times(2)).findByUsername("existingUser");
     }
@@ -140,7 +139,6 @@ class UserServiceImplTest {
         assertThrows(IllegalStateException.class, () -> userService.createUser(userDto));
         verify(userRepository, never()).save(any());
     }
-
 
 
     @Test

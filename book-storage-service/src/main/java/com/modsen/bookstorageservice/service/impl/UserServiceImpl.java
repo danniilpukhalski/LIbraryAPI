@@ -4,10 +4,10 @@ import com.modsen.bookstorageservice.domain.Role;
 import com.modsen.bookstorageservice.domain.User;
 import com.modsen.bookstorageservice.domain.exception.DuplicateResourceException;
 import com.modsen.bookstorageservice.domain.exception.ResourceNotFoundException;
-import com.modsen.bookstorageservice.repository.UserRepository;
-import com.modsen.bookstorageservice.service.UserService;
 import com.modsen.bookstorageservice.dto.UserDto;
 import com.modsen.bookstorageservice.mapper.UserMapper;
+import com.modsen.bookstorageservice.repository.UserRepository;
+import com.modsen.bookstorageservice.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public UserDto getUserByUsername(String username) {
         return userMapper.toDto(userRepository.findByUsername(username).orElseThrow(() ->
-                new ResourceNotFoundException("User  not found")));
+                new ResourceNotFoundException("User with username" + username + " not found")));
 
     }
 
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 new ResourceNotFoundException("User with " + userDto.getId() + "not found"));
         if (userRepository.findByUsername(userDto.getUsername()).isPresent() &&
                 !userRepository.findByUsername(userDto.getUsername()).get().getId().equals(userDto.getId())) {
-            throw new DuplicateResourceException("Username already exists");
+            throw new DuplicateResourceException("Username " + userDto.getUsername() + " already exists");
         }
         User user = userMapper.toEntity(userDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

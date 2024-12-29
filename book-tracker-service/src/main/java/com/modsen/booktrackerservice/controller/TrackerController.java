@@ -1,17 +1,18 @@
 package com.modsen.booktrackerservice.controller;
 
 
-import com.modsen.booktrackerservice.service.TrackerService;
-import com.modsen.booktrackerservice.dto.TrackerDto;
 import com.modsen.booktrackerservice.dto.CreateTrackerRequest;
+import com.modsen.booktrackerservice.dto.TrackerDto;
 import com.modsen.booktrackerservice.dto.TrackerStatusRequest;
 import com.modsen.booktrackerservice.dto.validation.OnUpdate;
+import com.modsen.booktrackerservice.service.TrackerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @SecurityRequirement(name = "bearerAuth")
-@Tag(description = "Tracker controller",name = "TrackerAPI")
+@Tag(description = "Tracker controller", name = "TrackerAPI")
 public class TrackerController {
 
     private final TrackerService trackerService;
@@ -64,6 +65,7 @@ public class TrackerController {
         return trackerService.getTrackersWhereStatusIsFree();
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete tracker by id")
     @Transactional
     @DeleteMapping("/{id}")

@@ -5,6 +5,9 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -43,4 +46,22 @@ public class RabbitConfig {
                 .to(bookExchange())
                 .with("create_book");
     }
+
+    @Bean
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
+        return new RabbitAdmin(connectionFactory);
+    }
+
+    @Bean
+    public CommandLineRunner setupQueues(RabbitAdmin rabbitAdmin) {
+        return args -> {
+            System.out.println("Registering queues and bindings...");
+            rabbitAdmin.declareQueue(deleteBookQueue());
+            rabbitAdmin.declareQueue(createBookQueue());
+            rabbitAdmin.declareExchange(bookExchange());
+            rabbitAdmin.declareBinding(deleteBookBinding());
+            rabbitAdmin.declareBinding(createBookBinding());
+        };
+    }
 }
+
