@@ -38,7 +38,7 @@ services:
         - SECRET_KEY=amhnY3Ziamtqa2hnZmZjZnZibmJ2Y2dlcmhmamdoa3ZjZ2ZnaGosYnZjZmdqaGJ2Y2ZnaGI=
         - ACCESS_DURATION=3600000
         - REFRESH_DURATION=259200000
-        - SPRING_RABBITMQ_HOST=rabbitmq   # Добавьте эту строку для указания имени хоста RabbitMQ
+        - SPRING_RABBITMQ_HOST=rabbitmq
         - SPRING_RABBITMQ_PORT=5672
     depends_on:
       - postgres
