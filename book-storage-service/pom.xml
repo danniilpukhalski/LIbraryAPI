@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.modsen</groupId>
         <artifactId>LibraryAPI</artifactId>
@@ -13,27 +14,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>book-storage-service</name>
     <description>book-storage-service</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+
     <properties>
         <java.version>23</java.version>
-        <maven.compiler.source>23</maven.compiler.source> <!-- укажите вашу версию JDK -->
-        <maven.compiler.target>23</maven.compiler.target>
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <jjwt.version>0.11.5</jjwt.version>
-        <springdoc.version>2.5.0</springdoc.version>
     </properties>
+
     <dependencies>
 
         <dependency>
@@ -52,6 +37,6 @@
             <version>3.4.0</version>
         </plugin>
     </plugins>
-</build>
+    </build>
 
 </project>

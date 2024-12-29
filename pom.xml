@@ -14,10 +14,11 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.5</version>
         <relativePath/> <!-- lookup parent from repository -->
-
     </parent>
+
     <modules>
-        <module>book-storage-service
+        <module>
+            book-storage-service
         </module>
         <module>
             book-tracker-service
@@ -36,6 +37,7 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jdbc</artifactId>
@@ -50,7 +52,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-
         </dependency>
 
         <dependency>
@@ -79,7 +80,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
-
             <optional>true</optional>
         </dependency>
 
@@ -225,6 +225,7 @@
         </dependency>
 
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
