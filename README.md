@@ -1,6 +1,6 @@
 1. Clone repository
 
-2. Build the book-storage-service and book-tracker servic3 into a .jar using Maven
+2. Build the book-storage-service and book-tracker service into a .jar using Maven
 
 2. Use commands "docker-compose biuld" and "docker compose up" in project derictory to run application in docker
 
