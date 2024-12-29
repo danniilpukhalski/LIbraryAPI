@@ -3,6 +3,7 @@ package com.modsen.booktrackerservice.config;
 import com.modsen.booktrackerservice.security.JwtTokenFilter;
 import com.modsen.booktrackerservice.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -27,6 +28,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor(onConstructor = @__(@Lazy))
 @EnableGlobalAuthentication
 @EnableMethodSecurity
+@Slf4j
 public class ApplicationConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -34,29 +36,37 @@ public class ApplicationConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        log.info("Creating a new PasswordEncoder (BCryptPasswordEncoder) bean.");
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        log.info("Creating a new AuthenticationManager bean.");
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        log.info("Configuring security filter chain.");
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                .sessionManagement(session -> {
+                    session.sessionCreationPolicy(STATELESS);
+                    log.info("Session management set to stateless.");
+                })
                 .exceptionHandling(configurer ->
                         configurer.authenticationEntryPoint(
                                         (request, response, authException) -> {
+                                            log.error("Authentication failed: Unauthorized access.");
                                             response.setStatus(HttpStatus.UNAUTHORIZED.value());
                                             response.getWriter().write("Unauthorized");
                                         })
                                 .accessDeniedHandler(
                                         (request, response, accessDeniedException) -> {
+                                            log.error("Access denied: Insufficient permissions.");
                                             response.setStatus(HttpStatus.FORBIDDEN.value());
                                             response.getWriter().write("Access denied.");
                                         }
@@ -66,12 +76,17 @@ public class ApplicationConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                        .anyRequest().authenticated()
+                );
+        log.info("Security filter chain configured successfully.");
+        httpSecurity.addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        log.info("JWT filter added before UsernamePasswordAuthenticationFilter.");
         return httpSecurity.build();
     }
+
     @Bean
-    HiddenHttpMethodFilter hiddenHttpMethodFilter() {
+    public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
+        log.info("Creating a new HiddenHttpMethodFilter bean.");
         return new HiddenHttpMethodFilter();
     }
 }

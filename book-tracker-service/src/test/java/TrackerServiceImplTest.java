@@ -1,12 +1,11 @@
-
 import com.modsen.booktrackerservice.domain.Tracker;
 import com.modsen.booktrackerservice.domain.exception.DuplicateResourceException;
 import com.modsen.booktrackerservice.domain.exception.ResourceNotFoundException;
-import com.modsen.booktrackerservice.repository.TrackerRepository;
-import com.modsen.booktrackerservice.service.impl.TrackerServiceImpl;
 import com.modsen.booktrackerservice.dto.TrackerDto;
 import com.modsen.booktrackerservice.dto.TrackerStatusRequest;
 import com.modsen.booktrackerservice.mapper.TrackMapper;
+import com.modsen.booktrackerservice.repository.TrackerRepository;
+import com.modsen.booktrackerservice.service.impl.TrackerServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

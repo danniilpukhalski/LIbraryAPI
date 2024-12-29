@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import java.util.List;
 @Validated
 @SecurityRequirement(name = "bearerAuth")
 @Tag(description = "Tracker controller", name = "TrackerAPI")
+@Slf4j
 public class TrackerController {
 
     private final TrackerService trackerService;
@@ -35,8 +37,14 @@ public class TrackerController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
     public TrackerDto getTrackerById(@PathVariable Long id) {
-
-        return trackerService.getTrackerById(id);
+        log.info("Attempting to retrieve tracker with ID: {}", id);
+        TrackerDto tracker = trackerService.getTrackerById(id);
+        if (tracker != null) {
+            log.info("Tracker with ID: {} retrieved successfully.", id);
+        } else {
+            log.error("Tracker with ID: {} not found.", id);
+        }
+        return tracker;
     }
 
     @Operation(summary = "Get tracker by book id")
@@ -44,7 +52,14 @@ public class TrackerController {
     @GetMapping("/get-by-book-id/{bookId}")
     @PreAuthorize("hasRole('USER')")
     public TrackerDto getTrackerByBookId(@PathVariable Long bookId) {
-        return trackerService.getTrackerByBookId(bookId);
+        log.info("Attempting to retrieve tracker with book ID: {}", bookId);
+        TrackerDto tracker = trackerService.getTrackerByBookId(bookId);
+        if (tracker != null) {
+            log.info("Tracker with book ID: {} retrieved successfully.", bookId);
+        } else {
+            log.error("Tracker with book ID: {} not found.", bookId);
+        }
+        return tracker;
     }
 
     @Operation(summary = "Get all trackers")
@@ -52,8 +67,10 @@ public class TrackerController {
     @GetMapping("/get-all")
     @PreAuthorize("hasRole('USER')")
     public List<TrackerDto> getAllTrackers() {
-
-        return trackerService.getAllTrackers();
+        log.info("Attempting to retrieve all trackers.");
+        List<TrackerDto> trackers = trackerService.getAllTrackers();
+        log.info("Retrieved {} trackers.", trackers.size());
+        return trackers;
     }
 
     @Operation(summary = "Get all free trackers")
@@ -61,8 +78,10 @@ public class TrackerController {
     @GetMapping("/get-all/free")
     @PreAuthorize("hasRole('USER')")
     public List<TrackerDto> getAllTrackersWhereStatusIsFree() {
-
-        return trackerService.getTrackersWhereStatusIsFree();
+        log.info("Attempting to retrieve all free trackers.");
+        List<TrackerDto> freeTrackers = trackerService.getTrackersWhereStatusIsFree();
+        log.info("Retrieved {} free trackers.", freeTrackers.size());
+        return freeTrackers;
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -71,8 +90,9 @@ public class TrackerController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteTrackerById(@PathVariable Long id) {
+        log.info("Attempting to delete tracker with ID: {}", id);
         trackerService.deleteTrackerById(id);
-
+        log.info("Tracker with ID: {} deleted successfully.", id);
     }
 
     @Operation(summary = "Delete tracker by book id")
@@ -80,8 +100,9 @@ public class TrackerController {
     @DeleteMapping("/delete-by-book-id/{bookId}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteTrackerBookById(@PathVariable Long bookId) {
-
+        log.info("Attempting to delete tracker with book ID: {}", bookId);
         trackerService.deleteTrackerByBookId(bookId);
+        log.info("Tracker with book ID: {} deleted successfully.", bookId);
     }
 
     @Operation(summary = "Update tracker status")
@@ -89,15 +110,20 @@ public class TrackerController {
     @PutMapping("/update-status/{bookId}")
     @PreAuthorize("hasRole('ADMIN')")
     public TrackerDto updateTrackerStatus(@RequestBody @Valid TrackerStatusRequest trackerStatusRequest, @PathVariable("bookId") Long bookId) {
-        return trackerService.updateTrackerStatus(bookId, trackerStatusRequest);
+        log.info("Attempting to update status of tracker with book ID: {}", bookId);
+        TrackerDto updatedTracker = trackerService.updateTrackerStatus(bookId, trackerStatusRequest);
+        log.info("Tracker with book ID: {} updated successfully with new status.", bookId);
+        return updatedTracker;
     }
 
-    @Operation(summary = "update tracker")
+    @Operation(summary = "Update tracker")
     @Transactional
     @PutMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
     public TrackerDto updateTracker(@Validated(OnUpdate.class) @RequestBody @Valid TrackerDto trackerDto) {
+        log.info("Attempting to update tracker with ID: {}", trackerDto.getId());
         trackerService.updateTracker(trackerDto);
+        log.info("Tracker with ID: {} updated successfully.", trackerDto.getId());
         return trackerDto;
     }
 
@@ -106,8 +132,10 @@ public class TrackerController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
     public TrackerDto createTracker(@NotNull @RequestBody CreateTrackerRequest createTrackerRequest) {
-
-        return trackerService.createTracker(createTrackerRequest.getBookId());
+        log.info("Attempting to create a new tracker for book ID: {}", createTrackerRequest.getBookId());
+        TrackerDto newTracker = trackerService.createTracker(createTrackerRequest.getBookId());
+        log.info("New tracker created successfully for book ID: {}", createTrackerRequest.getBookId());
+        return newTracker;
     }
 
 }

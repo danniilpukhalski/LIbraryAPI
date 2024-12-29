@@ -5,6 +5,7 @@ import com.modsen.bookstorageservice.security.JwtTokenProvider;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -30,23 +31,28 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableGlobalAuthentication
 @EnableMethodSecurity
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class ApplicationConfig {
 
     JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        log.info("Creating BCryptPasswordEncoder bean for password encoding");
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        log.info("Creating AuthenticationManager bean");
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        log.info("Configuring security filter chain");
+
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
@@ -55,29 +61,34 @@ public class ApplicationConfig {
                 .exceptionHandling(configurer ->
                         configurer.authenticationEntryPoint(
                                         (request, response, authException) -> {
+                                            log.error("Unauthorized access attempt");
                                             response.setStatus(HttpStatus.UNAUTHORIZED.value());
                                             response.getWriter().write("Unauthorized");
                                         })
                                 .accessDeniedHandler(
                                         (request, response, accessDeniedException) -> {
+                                            log.error("Access denied for user");
                                             response.setStatus(HttpStatus.FORBIDDEN.value());
                                             response.getWriter().write("Access denied.");
                                         }
                                 ))
                 .authorizeHttpRequests(request -> request
-                       .requestMatchers("/api/v1/auth/**").permitAll()
-                       .requestMatchers("/api/v1/books").hasRole("USER")
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/books").hasRole("USER")
                         .requestMatchers("/api/v1/user").hasRole("USER")
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+
+        log.info("Security filter chain configuration completed successfully");
         return httpSecurity.build();
     }
 
     @Bean
-    HiddenHttpMethodFilter hiddenHttpMethodFilter() {
+    public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
+        log.info("Creating HiddenHttpMethodFilter bean");
         return new HiddenHttpMethodFilter();
     }
 }

@@ -1,7 +1,7 @@
 FROM eclipse-temurin:23-jdk
 WORKDIR /app
 
-COPY book-tracker-service/book-tracker-service-0.0.1-SNAPSHOT.jar bookTracker.jar
+COPY book-tracker-service/target/book-tracker-service-0.0.1-SNAPSHOT.jar bookTracker.jar
 EXPOSE 8081
 
 CMD ["sh", "-c", "java -jar bookTracker.jar"]
